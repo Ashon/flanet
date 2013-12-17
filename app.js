@@ -2,12 +2,13 @@ var async = require('async');
 var express = require('express');
 var util = require('util');
 var faceplate = require('faceplate');
-var path =require('path');
+var path = require('path');
 // create an express webserver
 var app = express();
 
-var FACEBOOK_SECRET = 'c5bfd96f8dec9520f1dd1d5795c2d623';
 var FACEBOOK_APP_ID = '1400435640201754';
+var FACEBOOK_SECRET = 'c5bfd96f8dec9520f1dd1d5795c2d623';
+
 var port = process.env.PORT || 3000;
 
 app.configure(function(){
@@ -28,11 +29,6 @@ app.configure(function(){
     secret: FACEBOOK_SECRET,
     scope: 'user_likes, user_photos, user_status, user_activities, publish_actions, user,goups, user_subscriptions'
   }));
-});
-
-// listen to the PORT given to us in the environment
-app.listen(port, function() {
-  console.log("Listening on " + port);
 });
 
 app.configure(function(){
@@ -111,3 +107,7 @@ function handle_facebook_request(req, res) {
 
 app.get('/', handle_facebook_request);
 app.post('/', handle_facebook_request);
+
+app.listen(port, function() {
+  console.log("Listening on " + port + "\n" + app.id);
+});
