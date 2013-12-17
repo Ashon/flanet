@@ -4,25 +4,31 @@ var util = require('util');
 var faceplate = require('faceplate');
 // create an express webserver
 var app = express();
-app.use(express.logger());
-app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
-app.use(express.bodyParser());
-app.use(express.cookieParser());
 
-// set this to a secret value to encrypt session cookies
-app.use(express.session({ secret: process.env.SESSION_SECRET || 'secret123' }));
 var FACEBOOK_SECRET = 'c5bfd96f8dec9520f1dd1d5795c2d623';
 var FACEBOOK_APP_ID = '1400435640201754';
-app.use(faceplate.middleware({
-  app_id: FACEBOOK_APP_ID,
-  secret: FACEBOOK_SECRET,
-  scope:  'user_likes, user_photos, user_status, user_activities, publish_actions, user,goups, user_subscriptions'
-}));
-
-// listen to the PORT given to us in the environment
 var port = process.env.PORT || 3000;
 
+app.configure(function(){
+  app.set('port', port);
+  app.set('views', __dirname + '/views');
+  app.set('view engine', 'ejs');
+  app.set('view options', { pretty: true });
+  app.locals.pretty = true;
+  app.use(express.favicon());
+  app.use(express.logger('dev'));
+  app.use(express.bodyParser());
+  app.use(express.methodOverride());
+  app.use(express.cookieParser('secret'));
+  app.use(express.session({ secret: 'secret', store: store }));
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(require('faceplate').middleware({
+    app_id: FACEBOOK_APP_ID,
+    secret: FACEBOOK_SECRET,
+    scope:  'user_likes, user_photos, user_status, user_activities, publish_actions, user,goups, user_subscriptions'
+  }));
+
+// listen to the PORT given to us in the environment
 app.listen(port, function() {
   console.log("Listening on " + port);
 });
