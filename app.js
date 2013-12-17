@@ -20,7 +20,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(express.cookieParser('secret'));
-  app.use(express.session({ secret: 'secret', store: store }));
+  app.use(express.session({ secret: 'secret' }));
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(require('faceplate').middleware({
     app_id: FACEBOOK_APP_ID,
