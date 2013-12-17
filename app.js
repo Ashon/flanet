@@ -12,6 +12,8 @@ var FACEBOOK_SECRET = 'c5bfd96f8dec9520f1dd1d5795c2d623';
 var port = process.env.PORT || 3000;
 
 app.configure(function(){
+  app.set('id', FACEBOOK_APP_ID);
+  app.set('name', 'flanet');
   app.set('port', port);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'ejs');
@@ -24,35 +26,35 @@ app.configure(function(){
   app.use(express.cookieParser('secret'));
   app.use(express.session({ secret: 'secret' }));
   app.use(express.static(path.join(__dirname, 'public')));
-  app.use(require('faceplate').middleware({
+  app.use(faceplate.middleware({
     app_id: FACEBOOK_APP_ID,
     secret: FACEBOOK_SECRET,
     scope: 'user_likes, user_photos, user_status, user_activities, publish_actions, user,goups, user_subscriptions'
   }));
-});
 
-app.configure(function(){
   app.use(function(req, res, next){
     res.locals.host = req.headers['host'];
     res.locals.scheme = req.headers['x-forwarded-proto'] || 'http';
     res.locals.url = function(path){
-    	return res.locals.scheme + res.locals.url_no_scheme(path);
+      return res.locals.scheme + res.locals.url_no_scheme(path);
     };
     res.locals.url_no_scheme = function(path){
-    	return '://' + res.locals.host + path;
+      return '://' + res.locals.host + path;
     };
     next();
   });
+
 });
 
 function render_page(req, res) {
   req.facebook.app(function(app) {
+    console.log(app);
     req.facebook.me(function(user) {
       res.render('index.ejs', {
-        layout:    false,
-        req:       req,
-        app:       app,
-        user:      user
+        "layout":    false,
+        "req":       req,
+        "app":       {"id":FACEBOOK_APP_ID,"name":"flanet"},
+        "user":      user
       });
     });
   });
@@ -109,5 +111,5 @@ app.get('/', handle_facebook_request);
 app.post('/', handle_facebook_request);
 
 app.listen(port, function() {
-  console.log("Listening on " + port + "\n" + app.id);
+  console.log("Listening on " + port + "\napp : " + app);
 });
