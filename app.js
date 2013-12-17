@@ -27,6 +27,7 @@ app.configure(function(){
     secret: FACEBOOK_SECRET,
     scope:  'user_likes, user_photos, user_status, user_activities, publish_actions, user,goups, user_subscriptions'
   }));
+});
 
 // listen to the PORT given to us in the environment
 app.listen(port, function() {
