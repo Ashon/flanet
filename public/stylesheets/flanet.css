@@ -1,0 +1,35 @@
+body{
+	padding:0;
+	margin:0;
+	background-color:#333;
+	color:#fff;
+	font-weight:bold;
+	font-size:20px;
+}
+a{
+	text-decoration:none;
+	color:#666;
+}
+#title{
+	margin:10px;
+	padding:0;
+	font-size:20px;
+	font-family:Arial Black;
+	text-align:center;
+}
+#stage{
+	position:fixed;
+	top:0;
+	padding:0;
+	margin:0;
+}
+#container{
+	margin: 0 auto;
+	padding:0;
+}
+#status{
+	font-size:12px;
+	font-family:Arial Narrow;
+	margin: auto;
+	padding: 0;
+}
