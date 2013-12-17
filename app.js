@@ -2,6 +2,7 @@ var async = require('async');
 var express = require('express');
 var util = require('util');
 var faceplate = require('faceplate');
+var path =require('path');
 // create an express webserver
 var app = express();
 
@@ -25,7 +26,7 @@ app.configure(function(){
   app.use(require('faceplate').middleware({
     app_id: FACEBOOK_APP_ID,
     secret: FACEBOOK_SECRET,
-    scope:  'user_likes, user_photos, user_status, user_activities, publish_actions, user,goups, user_subscriptions'
+    scope: 'user_likes, user_photos, user_status, user_activities, publish_actions, user,goups, user_subscriptions'
   }));
 });
 
