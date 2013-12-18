@@ -22,6 +22,7 @@ a{
 	top:0;
 	padding:0;
 	margin:0;
+	z-index:10;
 }
 #container{
 	margin: 0 auto;
@@ -32,4 +33,24 @@ a{
 	font-family:Arial Narrow;
 	margin: auto;
 	padding: 0;
+}
+.header{
+	padding:10px;
+	position:fixed;
+	top:0;
+	width:100%;
+	background:rgba(8,7,7,.5);
+	z-index:99
+}
+.copyright{
+	position:fixed;
+	width:100%;
+	background:rgba(8,7,7,.5);
+	bottom:0;
+	color:#ddd;
+	font-size:10px;
+	width:100%;
+	text-align:center;
+	padding:10px 0;
+	z-index:98;
 }

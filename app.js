@@ -3,6 +3,7 @@ var express = require('express')
   , passport = require('passport')
   , fbStrategy = require('passport-facebook').Strategy;
 
+// need to be hidden...-,.-
 var FACEBOOK_APP_ID = '1400435640201754';
 var FACEBOOK_APP_SECRET = 'c5bfd96f8dec9520f1dd1d5795c2d623';
 
@@ -29,12 +30,13 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new fbStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://localhost:3000/auth/facebook/callback"
+    callbackURL: "http://ashon.iptime.org:3000/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
     process.nextTick(function () {
-      
+      // set accesstoken
+      profile.token = accessToken;
       // To keep the example simple, the user's Facebook profile is returned to
       // represent the logged-in user.  In a typical application, you would want
       // to associate the Facebook account with a user record in your database,
@@ -43,7 +45,6 @@ passport.use(new fbStrategy({
     });
   }
 ));
-
 
 var port = process.env.PORT || 3000;
 
@@ -64,19 +65,21 @@ app.configure(function() {
   app.use(express.static(__dirname + '/public'));
 });
 
-
+// page routing
 app.get('/', function(req, res){
-  res.render('index', { user: req.user });
+  res.render('index', { app : {id : FACEBOOK_APP_ID}, user: req.user });
+  console.log(req);
 });
 
 app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', { user: req.user });
+  res.render('account', { app : {id : FACEBOOK_APP_ID}, user: req.user });
+  console.log(req);
 });
 
 app.get('/login', function(req, res){
-  res.render('login', { user: req.user });
+  res.render('login', { app : {id : FACEBOOK_APP_ID}, user: req.user });
+  console.log(req);
 });
-
 
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -84,7 +87,17 @@ app.get('/login', function(req, res){
 //   redirecting the user to facebook.com.  After authorization, Facebook will
 //   redirect the user back to this application at /auth/facebook/callback
 app.get('/auth/facebook',
-  passport.authenticate('facebook'),
+  passport.authenticate('facebook', {
+    scope : ['user_likes',
+    , 'user_photos'
+    , 'user_status'
+    , 'user_activities'
+    , 'publish_actions'
+    , 'read_stream'
+    , 'user_groups'
+    , 'user_subscriptions'
+    ]
+  }),
   function(req, res){
     // The request will be redirected to Facebook for authentication, so this
     // function will not be called.
@@ -96,7 +109,7 @@ app.get('/auth/facebook',
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/facebook/callback', 
-  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  passport.authenticate('facebook', { successRedirect : '/', failureRedirect: '/login' }),
   function(req, res) {
     res.redirect('/');
   });
@@ -111,7 +124,6 @@ app.listen(port, function(){
   console.log("http listen : " + port);
 });
 
-
 // Simple route middleware to ensure user is authenticated.
 //   Use this route middleware on any resource that needs to be protected.  If
 //   the request is authenticated (typically via a persistent login session),
@@ -121,68 +133,3 @@ function ensureAuthenticated(req, res, next) {
   if (req.isAuthenticated()) { return next(); }
   res.redirect('/login')
 }
-
-/*
-function render_page(req, res) {
-  req.facebook.app(function(app) {
-    console.log(app);
-    req.facebook.me(function(user) {
-      res.render('index.ejs', {
-        "layout":    false,
-        "req":       req,
-        "app":       {"id":FACEBOOK_APP_ID,"name":"flanet"},
-        "user":      req.user
-      });
-    });
-  });
-}
-
-function handle_facebook_request(req, res) {
-  // if the user is logged in
-  if (req.facebook.token) {
-    async.parallel([
-      function(cb) {
-        // query 4 friends and send them to the socket for this socket id
-        req.facebook.get('/me/friends', { limit : 50 }, function(friends) {
-          req.friends = friends;
-          cb();
-        });
-      },
-      function(cb) {
-        // query 16 photos and send them to the socket for this socket id
-        req.facebook.get('/me/photos', { limit : 16 }, function(photos) {
-          req.photos = photos;
-          cb();
-        });
-      },
-      function(cb) {
-        // query 4 likes and send them to the socket for this socket id
-        req.facebook.get('/me/likes', { limit : 4 }, function(likes) {
-          req.likes = likes;
-          cb();
-        });
-      },
-      function(cb) {
-       req.facebook.get('/me/feed', { limit : 100 }, function(feeds){
-        req.feeds = feeds;
-        cb();
-      });
-     },
-     function(cb) {
-        // use fql to get a list of my friends that are using this app
-        req.facebook.fql('SELECT uid, name, is_app_user, pic_square FROM user WHERE uid in (SELECT uid2 FROM friend WHERE uid1 = me()) AND is_app_user = 1', function(result) {
-          req.friends_using_app = result;
-          cb();
-        });
-      }
-      ], function() {
-        render_page(req, res);
-      });
-
-} else {
-  render_page(req, res);
-}
-}
-
-app.get('/', handle_facebook_request);
-app.post('/', handle_facebook_request);*/

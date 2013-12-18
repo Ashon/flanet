@@ -13,17 +13,188 @@
 	<script type="text/javascript" src="/scripts/jquery-1.7.2.js"></script>
 	<script type="text/javascript" src='/scripts/box2djs.0.2.0.jquery.min.js'></script>
 
-	<!-- flanet library -->
+	<!-- flanet framework -->
 	<script type="text/javascript" src='/scripts/flanet-v1.0.5.js'></script>
-
-	<!-- testing module -->
-	<script type="text/javascript" src='/scripts/test2.js'></script>
 </head>
 <body>
 	<% if (!user) { %>
-	<h2>Welcome! Please log in.</h2>
+		<div class="header" style="">
+			<h2>
+				Welcome to Flanet Prototype.
+			</h2>
+			<a href="/auth/facebook">
+				&gt; Login with Facebook
+			</a>
+		</div>
+		<div id="stage"></div>
+		<script>
+			var init_content = {
+				id : "0",
+				name : "Flanet",
+				imgSrc : "",
+			}
+			function initialize(width, height, x, y, scale, user){
+				var Panel = new Flanet.Panel({
+					x : x,
+					y : y,
+					width : scale,
+					height :scale,
+					content : init_content
+				});
+				
+				var world = new Flanet.World({
+					centerPanel : Panel,
+					width : width,
+					height : height
+				});
+
+				Flanet.addWorld(world);
+			};
+			var container = "stage";
+			$("#" + container).width($(window).width());
+			$("#" + container).height($(window).height());
+			var width = $("#" + container).width();
+			var height = $("#" + container).height();
+			//flanet initialize
+			Flanet.init({ container : "stage" });
+			// test module setting
+			initialize(width, height, width/2, height/2, 50, init_content);
+			// flanet start
+			Flanet.start();
+		</script>
 	<% } else { %>
-	<h2>Hello, <%= user.username %>.</h2>
+		<div id="fb-root"></div>
+		<script type="text/javascript">
+			// initialize fb api
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId      : '<%= app.id %>',
+					status     : true,
+					cookie     : true,
+					xfbml      : true
+				});
+				FB.Event.subscribe('auth.login', function(response) {
+					window.location = window.location;
+				});
+				FB.Canvas.setAutoGrow();
+			};
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.net/en_US/all.js";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>
+		<div class="header" style="padding:10px;position:fixed;width:100%;top:0;z-index:99; background:rgba(8,7,7,.5)">
+			<h2>
+				Hello, <%= user.name.givenName %>.
+			</h2>
+			<a href="/logout">
+				&gt; Logout
+			</a>
+		</div>
+		<div id="stage"></div>
+		<script>
+			function fb_initialize(width, height, x, y, scale, user, flanet){
+				var Panel = new Flanet.Panel({
+					x : x,
+					y : y,
+					width : scale,
+					height :scale,
+					content : user
+				});
+				
+				var world = new Flanet.World({
+					centerPanel : Panel,
+					width : width,
+					height : height
+				});
+				Flanet.addWorld(world);
+				
+				for(var i = 0; i < flanet.length; i++){
+					var s = Math.random() * (scale - 20) + 10;
+					world.addPanel(new Flanet.Panel({
+						x : x + (Math.random() * 600 - 300),
+						y : y + (Math.random() * 600 - 300),
+						width : s,
+						height : s,
+						content : flanet[i]
+					}));
+				}
+			};
+
+			// async : get friendlist
+			$.get("https://graph.facebook.com/me/friends"
+				, { access_token: "<%= user.token %>" }
+				, function(data){
+					var user_content = {
+						id : "<%= user.id %>",
+						name : "<%= user.username %>",
+						imgSrc : "https://graph.facebook.com/" + "<%= user.id %>" + "/picture?type=square",
+						clicked : function(){
+							FB.ui(
+							{
+								method : 'feed',
+								link   : $(this).attr('data-url')
+							},
+							function (response) {
+								if (response != null) {
+									logResponse(response);
+								}
+							}
+							);},
+							dragged : function(){
+						}
+					};
+					var flanet_content = new Array();
+					var maxLength = 100;
+					var length = maxLength > data.data.length ? data.data.length : maxLength;
+					for(var i = 0; i < length; i++)
+						flanet_content[flanet_content.length] = {
+							id : data.data[i].id,
+							name : data.data[i].name,
+							imgSrc : "https://graph.facebook.com/" + data.data[i].id  + "/picture?type=square",
+							clicked : function(){
+								
+								/* remove panel
+								var panel = Flanet.getCurrentWorld().getPanelById(this.id);
+								if(panel)
+									Flanet.getCurrentWorld().rmPanel(panel);
+								*/
+
+								/* feed to friend */
+								var that = this;
+								FB.ui(
+									{
+										method: 'stream.publish',
+										link: $(this).attr('data-url'),
+										target_id: this.id,
+										display: 'iframe'
+									},
+									function (response) {
+										if (response != null) {
+											logResponse(response);
+										}
+									}
+								);
+							}
+						};
+					var container = "stage";
+					$("#" + container).width($(window).width());
+					$("#" + container).height($(window).height());
+					var width = $("#" + container).width();
+					var height = $("#" + container).height();
+					// flanet initialize
+					Flanet.init({ container : "stage" });
+					// test module setting
+					fb_initialize(width, height, width/2, height/2, 50, user_content, flanet_content);
+					// flanet start
+					Flanet.start();
+				}
+			);
+		</script>
 	<% } %>
+	<div class="copyright"><p>Flanet v1.0.5<br/>copyright(c) juwon.lee all rights reserved.</p></div>
 </body>
 </html>

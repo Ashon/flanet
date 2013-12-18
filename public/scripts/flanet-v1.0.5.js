@@ -522,19 +522,19 @@ Flanet.Content.prototype = {
 		setClicked : function(click){
 			if(!click)
 				this.clicked = function(){};
-				else
-					this.clicked = click;
+			else
+				this.clicked = click;
 		},
 		setDragged : function(drag){
 			if(!drag)
 				this.dragged = function(){};
-				else
-					this.dragged = drag;
+			else
+				this.dragged = drag;
 		},
 		setDblclicked : function(dblclick){
 			if(!dblclick)
 				this.dblclicked = function(){};
-				else
-					this.dblclicked = dblclick;
+			else
+				this.dblclicked = dblclick;
 		}
 };
