@@ -4,7 +4,7 @@ var express = require('express')
   , fbStrategy = require('passport-facebook').Strategy;
 
 var FACEBOOK_APP_ID = '1400435640201754';
-var FACEBOOK_SECRET = 'c5bfd96f8dec9520f1dd1d5795c2d623';
+var FACEBOOK_APP_SECRET = 'c5bfd96f8dec9520f1dd1d5795c2d623';
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
