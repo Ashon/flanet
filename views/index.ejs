@@ -26,112 +26,12 @@
 
 	<!-- testing module -->
 	<script type="text/javascript" src='/scripts/test2.js'></script>
-
-		<!--[if IE]>
-		<script type="text/javascript">
-			var tags = ['header', 'section'];
-			while(tags.length)
-				document.createElement(tags.pop());
-		</script>
-		<![endif]-->
-	</head>
-	<body>
-		<!-- fb init -->
-		<div id="fb-root"></div>
-		<script type="text/javascript">
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId      : '<%= app.id %>',
-				channelUrl : '<%= url_no_scheme('/channel.html') %>',
-				status     : true,
-				cookie     : true,
-				xfbml      : true
-			});
-			FB.Event.subscribe('auth.login', function(response) {
-				window.location = window.location;
-			});
-			FB.Canvas.setAutoGrow();
-		};
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src = "//connect.facebook.net/en_US/all.js";
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-		</script>
-		<!-- Flanet Canvas -->
-		<span id="title">FlanetProject - Friend + Planet</span>
-		<span id="status">ver 0.3</span>
-		<div id="feedTest" style="font-size:11px;"></div>
-		<div id="stage"></div>
-		<% if (user) { %>
-		<% req.feeds.forEach(function(feed) { %>
-		<div><%= feed.message %></div>
-		<% }); %>
-		<script>
-		var user_content = {
-			id : "<%= user.id %>",
-			name : "<%= user.name %>",
-			imgSrc : "https://graph.facebook.com/" + "<%= user.id %>" + "/picture?type=normal",
-			clicked : function(){
-				FB.ui(
-				{
-					method : 'feed',
-					link   : $(this).attr('data-url')
-				},
-				function (response) {
-					if (response != null) {
-						logResponse(response);
-					}
-				}
-				);},
-				dragged : function(){
-				}
-			};
-			var f_content = new Array();
-			<% req.friends.forEach(function(friend) { %>
-				f_content[f_content.length] = {
-					id : "<%= friend.id %>",
-					name : "<%= friend.name %>",
-					imgSrc : "https://graph.facebook.com/<%= friend.id %>/picture?type=square",
-					clicked : function(){
-						var panel = Flanet.getCurrentWorld().getPanelById(this.id);
-						if(panel)
-							Flanet.getCurrentWorld().rmPanel(panel);
-							/*
-							var that = this;
-							FB.ui(
-									{
-										method: 'stream.publish',
-										link: $(this).attr('data-url'),
-										target_id: this.id,
-										display: 'iframe'
-									},
-									function (response) {
-										if (response != null) {
-											logResponse(response);
-										}
-									}
-							);
-			*/
-		}
-	}
-	<% }); %>
-			var container = "stage";
-			$("#" + container).width($(window).width());
-			$("#" + container).height($(window).height());
-			var width = $("#" + container).width();
-			var height = $("#" + container).height();
-		//flanet initialize
-		Flanet.init({ container : "stage"	});
-		// test module setting
-		addTest(width, height, width/2, height/2, 50);
-		// flanet start
-		Flanet.start();
-		</script>
-		<% } else { %>
-		<fb:login-button cope="user_likes, user_photos, user_status, user_activities, publish_actions, user,groups, user_subscriptions"></fb:login-button>
-		<% } %>
-	</body>
-	</html>
+</head>
+<body>
+	<% if (!user) { %>
+	<h2>Welcome! Please log in.</h2>
+	<% } else { %>
+	<h2>Hello, <%= user.username %>.</h2>
+	<% } %>
+</body>
+</html>
