@@ -188,6 +188,7 @@ Flanet.Panel.prototype = {
 		text : undefined,
 		bodyDef : undefined,
 		body : undefined,
+		strokeColor : "#fff",
 		// initialize
 		init : function(json){
 			//position
@@ -210,6 +211,7 @@ Flanet.Panel.prototype = {
 			this.bodyDef.position.Set(this.pos.x, this.pos.y);
 			// kinetic image
 			var img = new Image();
+			this.strokeColor = json.strokeColor;
 			img.src= this.content.getImgSrc();
 			img.onload = this.setImage(img);
 			this.setText(this.content.getName());
@@ -224,7 +226,7 @@ Flanet.Panel.prototype = {
 				height : that.height * 2 - sWidth,
 				fill : "#fff",
 				image : img,
-				stroke : "#f60",
+				stroke : that.strokeColor,
 				strokeWidth : sWidth,
 				centerOffset : {
 					x : that.width - sWidth / 2,
