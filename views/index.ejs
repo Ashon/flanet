@@ -73,7 +73,7 @@
 					cookie     : true,
 					xfbml      : true
 				});
-				FB.Event.subscribe('auth.login', function(response) {
+				FB.Event.subscribe('auth.login', function(res) {
 					window.location = window.location;
 				});
 				FB.Canvas.setAutoGrow();
@@ -106,19 +106,16 @@
 						name : "<%= user.username %>",
 						imgSrc : "https://graph.facebook.com/" + "<%= user.id %>" + "/picture?type=square",
 						clicked : function(){
-							FB.ui(
-							{
+							FB.ui({
 								method : 'feed',
-								link   : $(this).attr('data-url')
+								link : $(this).attr('data-url')
 							},
-							function (response) {
-								if (response != null) {
-									logResponse(response);
-								}
-							}
-							);},
-							dragged : function(){
-						}
+							function(res){
+								if (res != null)
+									logResponse(res);
+							});
+						},
+						dragged : function(){}
 					}
 				}),
 				width : width,
@@ -128,29 +125,10 @@
 			// async : get friendlist
 			$.get("https://graph.facebook.com/me/friends"
 				, { access_token: "<%= user.token %>" }
-				, function(data){
-					var user_content = {
-						id : "<%= user.id %>",
-						name : "<%= user.username %>",
-						imgSrc : "https://graph.facebook.com/" + "<%= user.id %>" + "/picture?type=square",
-						clicked : function(){
-							FB.ui(
-							{
-								method : 'feed',
-								link   : $(this).attr('data-url')
-							},
-							function (response) {
-								if (response != null) {
-									logResponse(response);
-								}
-							}
-							);},
-							dragged : function(){
-						}
-					};
+				, function(res){
 					var flanet_content = new Array();
 					var maxLength = 100;
-					var length = maxLength > data.data.length ? data.data.length : maxLength;
+					var length = maxLength > res.data.length ? res.data.length : maxLength;
 					for(var i = 0; i < length; i++){
 						var s = Math.random() * (scale - 20) + 10;
 						world.addPanel(new Flanet.Panel({
@@ -159,9 +137,9 @@
 							width : s,
 							height : s,
 							content : {
-								id : data.data[i].id,
-								name : data.data[i].name,
-								imgSrc : "https://graph.facebook.com/" + data.data[i].id  + "/picture?type=square",
+								id : res.data[i].id,
+								name : res.data[i].name,
+								imgSrc : "https://graph.facebook.com/" + res.data[i].id  + "/picture?type=square",
 								clicked : function(){
 									/* remove panel
 									var panel = Flanet.getCurrentWorld().getPanelById(this.id);
@@ -170,17 +148,14 @@
 									*/
 									/* feed to friend */
 									var that = this;
-									FB.ui(
-										{
+									FB.ui({
 											method: 'stream.publish',
 											link: $(this).attr('data-url'),
 											target_id: this.id,
 											display: 'iframe'
-										},
-										function (response) {
-											if (response != null) {
-												logResponse(response);
-											}
+										}, function(res){
+											if (res != null)
+												logResponse(res);
 										}
 									);
 								}
