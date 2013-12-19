@@ -258,6 +258,7 @@ Flanet.Panel.prototype = {
 			height : that.height * 2 - sWidth,
 			fill : "#f8f8f8",
 			image : img,
+			// color code range #888 ~ #fff
 			stroke : '#' + Math.floor(8947848 + Math.random() * 7829367).toString(16),
 			strokeWidth : sWidth,
 			centerOffset : {
@@ -265,7 +266,9 @@ Flanet.Panel.prototype = {
 				y : that.height - sWidth / 2
 			},
 			draggable : false,
-			listening : false
+			listening : false,
+			filter: Kinetic.Filters.Blur,
+          	filterRadius: 20
 		});
 	},
 	getImage : function(){
