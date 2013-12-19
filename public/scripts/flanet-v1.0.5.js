@@ -256,7 +256,7 @@ Flanet.Panel.prototype = {
 			y : that.pos.y,
 			width : that.width * 2 - sWidth,
 			height : that.height * 2 - sWidth,
-			fill : "#fff",
+			fill : "#444",
 			image : img,
 			stroke : '#' + (function co(lor){
 				return (lor += [0,1,2,3,4,5,6,7,8,9,'a','b','c','d','e','f'][Math.floor(Math.random()*10)])
