@@ -18,8 +18,9 @@
 </head>
 <body>
 	<div id="stage"></div>
+
 	<script>
-		var container = $("#stage");
+		var container = $('#stage');
 		container.width($(window).width());
 		container.height($(window).height());
 		var width = container.width();
@@ -28,7 +29,7 @@
 		var y = height * .5;
 		var scale = 50;
 		//flanet initialize
-		Flanet.init({ container : "stage" });
+		Flanet.init({ container : 'stage' });
 	</script>
 
 	<% if (!user) { %>
@@ -48,16 +49,27 @@
 					width : scale,
 					height :scale,
 					content : {
-						id : "0",
-						name : "Greetings~",
-						imgSrc : ""
+						id : '0',
+						name : 'Greetings~',
+						imgSrc : ''
 					}
 				}),
 				width : width,
 				height : height
 			});
-
 			Flanet.addWorld(world);
+			for(var i = 0 ; i < 5; i ++)
+				world.addPanel(new Flanet.Panel({
+					x : x + (Math.random() * 600 - 300),
+					y : y + (Math.random() * 600 - 300),
+					width : s,
+					height : s,
+					content : {
+						id : '0',
+						name : 'Drag it~',
+						imgSrc : '',
+					}
+				}));
 			// flanet start
 			Flanet.start();
 		</script>
@@ -82,7 +94,7 @@
 				var js, fjs = d.getElementsByTagName(s)[0];
 				if (d.getElementById(id)) return;
 				js = d.createElement(s); js.id = id;
-				js.src = "//connect.facebook.net/en_US/all.js";
+				js.src = '//connect.facebook.net/en_US/all.js';
 				fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
 		</script>
@@ -102,9 +114,9 @@
 					width : scale,
 					height : scale,
 					content : {
-						id : "<%= user.id %>",
-						name : "<%= user.username %>",
-						imgSrc : "https://graph.facebook.com/" + "<%= user.id %>" + "/picture?type=square",
+						id : '<%= user.id %>',
+						name : '<%= user.givenName %>',
+						imgSrc : 'https://graph.facebook.com/<%= user.id %>/picture?type=square',
 						clicked : function(){
 							FB.ui({
 								method : 'feed',
@@ -123,8 +135,8 @@
 			});
 			Flanet.addWorld(world);
 			// async : get friendlist
-			$.get("https://graph.facebook.com/me/friends"
-				, { access_token: "<%= user.token %>" }
+			$.get('https://graph.facebook.com/me/friends'
+				, { access_token: '<%= user.token %>' }
 				, function(res){
 					var flanet_content = new Array();
 					var maxLength = 100;
@@ -139,7 +151,7 @@
 							content : {
 								id : res.data[i].id,
 								name : res.data[i].name,
-								imgSrc : "https://graph.facebook.com/" + res.data[i].id  + "/picture?type=square",
+								imgSrc : 'https://graph.facebook.com/' + res.data[i].id  + '/picture?type=square',
 								clicked : function(){
 									/* remove panel
 									var panel = Flanet.getCurrentWorld().getPanelById(this.id);
