@@ -183,7 +183,7 @@ var Flanet = {
 };
 
 //Flanet Panel
-function Flanet.Panel(json){
+Flanet.Panel = function(json){
 	this.init(json);
 };
 
@@ -321,7 +321,7 @@ Flanet.Panel.prototype = {
 };
 
 //Flanet World
-function Flanet.World(json){
+Flanet.World = function(json){
 	this.init(json);
 };
 
@@ -490,7 +490,7 @@ Flanet.World.prototype = {
 };
 
 //Flanet Content
-function Flanet.Content(json){
+Flanet.Content = function(json){
 	this.init(json);
 };
 Flanet.Content.prototype = {
