@@ -15,12 +15,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 var Flanet = {
 	// flanet world array
 	worldArray : [],
-	// physics iteration
+
+	// physics engine iteration.
 	iteration : 8,
+
 	// animation step
 	timestep : 1 / 60,
+
 	// Kinetic stage
 	stage : undefined,
+
 	// initialize
 	init : function(json){
 		var that = this;
@@ -197,6 +201,7 @@ Flanet.Panel.prototype = {
 	text : undefined,
 	bodyDef : undefined,
 	body : undefined,
+
 	// initialize
 	init : function(json){
 		//position
@@ -206,6 +211,7 @@ Flanet.Panel.prototype = {
 		this.height = json.height;
 		this.radius = Math.sqrt(this.width * this.width + this.height * this.height);
 		this.content = new Flanet.Content(json.content);
+
 		// physics body
 		var boxSd = new b2BoxDef();
 		boxSd.friction = 1;
@@ -223,6 +229,8 @@ Flanet.Panel.prototype = {
 		img.onload = this.setImage(img);
 		this.setText(this.content.getName());
 	},
+
+	// set canvas image element
 	setImage : function(img){
 		var that = this;
 		var sWidth = 10;
@@ -271,6 +279,7 @@ Flanet.Panel.prototype = {
 	getBody : function(){
 		return this.body;
 	},
+
 	// update
 	update : function(){
 		if(this.body){
@@ -326,51 +335,71 @@ Flanet.World = function(json){
 };
 
 Flanet.World.prototype = {
+	// canvas size
 	width : 0,
 	height : 0,
+
 	// physics world
 	world : undefined,
 	centerPanel : undefined,
 	centroid : undefined,
 	layer : undefined,
 	panelArray : new Array(),
+
+	// limit boundary
 	boundary : 10000,
+
 	// gravity vector
 	gravity : new b2Vec2(0, 0),
+
 	// running status
 	activation : true,
+
+	//initialize
 	init : function(json){
 		this.panelArray = [];
 		this.centroid = new b2Vec2(this.width / 2, this.height / 2);
 		this.width = json.width;
 		this.height = json.height;
 		var worldAABB = new b2AABB();
+
 		// physics boundary
 		worldAABB.minVertex.Set(-this.boundary, -this.boundary);
 		worldAABB.maxVertex.Set(this.width + this.boundary, this.height + this.boundary);
+
 		// physics world init
 		this.world = new b2World(worldAABB, this.gravity, true);
+
 		// draw layer init
 		this.layer = new Kinetic.Layer();
 		this.setCenterPanel(json.centerPanel);
 	},
+
+	// get physical body
 	getBody : function(v){
 		// aabb : axis aligned bounding box
 		var aabb = new b2AABB();
 		var maxCount = 10;
 		var shapes = new Array();
 		var body = undefined;
+
+		// make small aabb to contact check
 		aabb.minVertex.Set(v.x - 1, v.y - 1);
 		aabb.maxVertex.Set(v.x + 1, v.y + 1);
+
+		// get contact query
 		var count = this.world.Query(aabb, shapes, maxCount);
 		for(var i = 0; i < count; ++i)
 			if(!shapes[i].m_body.IsStatic())
+				// get only one body
 				if(shapes[i].TestPoint(v)){
 					body = shapes[i].m_body;
 					break;
 				}
 		return body;
 	},
+
+	// get body index
 	getIndex : function(body){
 		if(body == this.centerPanel.getBody())
 			return -1;
@@ -379,6 +408,8 @@ Flanet.World.prototype = {
 				if(body == this.panelArray[i].getBody())
 					return i;
 	},
+
+	// world thread control
 	start : function(){
 		this.layer.draw();
 		this.activation = true;
@@ -402,15 +433,22 @@ Flanet.World.prototype = {
 		if(this.activation){
 			for(var i = 0; i < this.panelArray.length; i++){
 				var body = this.panelArray[i].getBody();
+
+				// center panel has gravity - panel direction is pointing centerpanel.
 				var direction = b2Math.SubtractVV(this.centerPanel.getPosition()
 												  , body.GetCenterPosition());
+
+				// apply force to panel
 				body.ApplyForce(
 						b2Math.MulFV(body.m_mass * 0.01 *
 								this.getAltitute(this.panelArray[i].getPosition()), direction)
 								, this.centerPanel.getPosition()
 				);
+
 				this.panelArray[i].update();
 			}
+
+			// center panel's movement logic..
 			var cb = this.centerPanel.getBody();
 			var cd = b2Math.SubtractVV(this.centroid, cb.GetCenterPosition());
 			cb.ApplyForce(
@@ -427,6 +465,8 @@ Flanet.World.prototype = {
 	getWorld : function(){
 		return this.world;
 	},
+
+	// set world's center position
 	setCentroid : function(v){
 		this.centroid.x = v.x;
 		this.centroid.y = v.y;
@@ -434,6 +474,8 @@ Flanet.World.prototype = {
 	getCentroid : function(){
 		return this.centroid;
 	},
+
+	// set flanet world's corePanel
 	setCenterPanel : function(panel){
 		this.layer.add(panel.getImage());
 		this.layer.add(panel.getText());
@@ -446,6 +488,8 @@ Flanet.World.prototype = {
 	getCenterPanel : function(){
 		return this.centerPanel;
 	},
+
+	// get distance between core to point vector v.
 	getAltitute : function(v){
 		return this.centerPanel.getDistance(v);
 	},
