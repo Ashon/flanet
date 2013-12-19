@@ -28,22 +28,25 @@ var Flanet = {
 	// initialize
 	init : function(json){
 		var that = this;
+		var queryContainer = $("#" + json.container);
+
 		this.stage = new Kinetic.Stage({
 			container : json.container,
-			width : $("#" + json.container).width(),
-			height : $("#" + json.container).height()
+			width : queryContainer.width(),
+			height : queryContainer.height()
 		});
+
 		// html container mouseEvent binding
-		$("#" + json.container).mousemove(function(e){
+		queryContainer.mousemove(function(e){
 			Flanet.mouseEvent.mousemove(e);
 		});
-		$("#" + json.container).click(function(e){
+		queryContainer.click(function(e){
 			Flanet.mouseEvent.click(e);
 		});
-		$("#" + json.container).mousedown(function(e){
+		queryContainer.mousedown(function(e){
 			Flanet.mouseEvent.mousedown(e);
 		});
-		$("#" + json.container).mouseup(function(e){
+		queryContainer.mouseup(function(e){
 			Flanet.mouseEvent.mouseup(e);
 		});
 		this.stage.onFrame(function(frame){
@@ -56,10 +59,12 @@ var Flanet = {
 		if(this.stage)
 			this.stage.start();
 	},
+
 	stop : function(){
 		if(this.stage)
 			this.stage.stop();
 	},
+
 	step : function(){
 		for(var i = 0; i < this.worldArray.length; i++){
 			var world = this.worldArray[i];
@@ -76,12 +81,14 @@ var Flanet = {
 		this.worldArray[this.worldArray.length] = world;
 		this.stage.add(world.getLayer());
 	},
+
 	getWorld : function(v){
 		for(var i = 0; i < this.worldArray.length; i++)
 			if(this.worldArray[i].intersects(v))
 				return this.worldArray[i];
 		return undefined;
 	},
+
 	getCurrentWorld : function(){
 		return this.mouseEvent.world;
 	},
@@ -91,8 +98,10 @@ var Flanet = {
 		// mouse status check
 		drag : false,
 		moved : false,
+
 		// Panel object
 		panel : undefined,
+
 		// physics event
 		mPos : new b2Vec2(0, 0),
 		mJoint : undefined,
@@ -192,15 +201,22 @@ Flanet.Panel = function(json){
 };
 
 Flanet.Panel.prototype = {
+
 	pos : undefined,
 	width : 0,
 	height : 0,
 	radius : 0,
-	content : undefined,
+
+	// canvas element
 	image : undefined,
 	text : undefined,
+
+	// physics
 	bodyDef : undefined,
 	body : undefined,
+
+	// panels information
+	content : undefined,
 
 	// initialize
 	init : function(json){
@@ -223,6 +239,7 @@ Flanet.Panel.prototype = {
 		this.bodyDef.linearDamping = 0.05;
 		this.bodyDef.angularDamping = 0.05;
 		this.bodyDef.position.Set(this.pos.x, this.pos.y);
+
 		// kinetic image
 		var img = new Image();
 		img.src= this.content.getImgSrc();
