@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:fb="http://ogp.me/ns/fb#" lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=no" />
+
+	<!-- css -->
+	<link href="/stylesheets/reset.css" type=text/css rel=stylesheet>
+	<link href="/stylesheets/flanet.css" type=text/css rel=stylesheet>
+
+	<!-- basic library -->
+	<script type="text/javascript" src='/scripts/kinetic-v3.9.2.js'></script>
+	<script type="text/javascript" src="/scripts/jquery-1.7.2.js"></script>
+	<script type="text/javascript" src='/scripts/box2djs.0.2.0.jquery.min.js'></script>
+
+	<!-- flanet framework -->
+	<script type="text/javascript" src='/scripts/flanet-v1.0.5.js'></script>
+</head>
+<body>
+	<!-- initialize flanet stage -->
+	<div id="stage"></div>
+	<script>
+		var container = $('#stage');
+		container.width($(window).width());
+		container.height($(window).height());
+		var width = container.width();
+		var height = container.height();
+		var x = width * .5;
+		var y = height * .5;
+		var scale = 50;
+		//flanet initialize
+		Flanet.init({ container : 'stage' });
+	</script>
+	<div class="header">
+		<h2>
+			Welcome to Flanet Project. - Debug mode
+		</h2>
+		<a href="/">
+			&gt; Link
+		</a>
+	</div>
+	<script>
+		var world = new Flanet.World({
+			centerPanel : new Flanet.Panel({
+				x : x,
+				y : y,
+				width : scale,
+				height :scale,
+				content : {
+					id : '0',
+					name : 'Greetings~',
+					imgSrc : ''
+				}
+			}),
+			width : width,
+			height : height
+		});
+		Flanet.addWorld(world);
+		var string = [
+			"This is Panel."
+			, "Just Drag it."
+			, "Click to Fb feed"
+			, "yeah~"
+			, "have a nice day~"
+		];
+		for(var i = 0 ; i < 5; i ++){
+			var s = Math.random() * (scale - 10) + 30;
+			world.addPanel(new Flanet.Panel({
+				x : x + (Math.random() * 600 - 300),
+				y : y + (Math.random() * 600 - 300),
+				width : s,
+				height : s,
+				content : {
+					id : '0',
+					name : string[i],
+					imgSrc : '',
+				}
+			}));
+		}
+	</script>
+	<!-- Flanet start -->
+	<script>
+		Flanet.start();
+	</script>
+	<div class="copyright"><p>Flanet v1.0.5<br/>copyright(c) juwon.lee all rights reserved.</p></div>
+</body>
+</html>
