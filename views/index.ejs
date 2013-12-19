@@ -116,7 +116,7 @@
 					height : scale,
 					content : {
 						id : '<%= user.id %>',
-						name : '<%= user.givenName %>',
+						name : '<%= user.name.givenName %>',
 						imgSrc : 'https://graph.facebook.com/<%= user.id %>/picture?type=square',
 						clicked : function(){
 							FB.ui({
