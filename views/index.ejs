@@ -58,7 +58,9 @@
 				height : height
 			});
 			Flanet.addWorld(world);
-			for(var i = 0 ; i < 5; i ++)
+
+			for(var i = 0 ; i < 5; i ++){
+				var s = Math.random() * (scale - 20) + 10;
 				world.addPanel(new Flanet.Panel({
 					x : x + (Math.random() * 600 - 300),
 					y : y + (Math.random() * 600 - 300),
@@ -70,6 +72,7 @@
 						imgSrc : '',
 					}
 				}));
+			}
 		</script>
 	<% } else { %>
 		<!-- initialize fb-root -->
