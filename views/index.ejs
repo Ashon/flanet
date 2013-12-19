@@ -112,16 +112,32 @@
 				y : y,
 				width : scale,
 				height :scale,
-				content : user
+				content : {
+					id : "<%= user.id %>",
+					name : "<%= user.username %>",
+					imgSrc : "https://graph.facebook.com/" + "<%= user.id %>" + "/picture?type=square",
+					clicked : function(){
+						FB.ui(
+						{
+							method : 'feed',
+							link   : $(this).attr('data-url')
+						},
+						function (response) {
+							if (response != null) {
+								logResponse(response);
+							}
+						}
+						);},
+						dragged : function(){
+					}
+				}
 			});
-
 			var world = new Flanet.World({
 				centerPanel : Panel,
 				width : width,
 				height : height
 			});
 			Flanet.addWorld(world);
-
 			// async : get friendlist
 			$.get("https://graph.facebook.com/me/friends"
 				, { access_token: "<%= user.token %>" }
