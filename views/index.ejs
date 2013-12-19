@@ -28,12 +28,14 @@
 		</div>
 		<div id="stage"></div>
 		<script>
+			var init_content = {
+				id : "0",
+				name : "Greetings~",
+				imgSrc : ""
+			}
+
 			function initialize(width, height, x, y, scale){
-				var init_content = {
-					id : "0",
-					name : "Greetings~",
-					imgSrc : ""
-				}
+
 				var Panel = new Flanet.Panel({
 					x : x,
 					y : y,
@@ -41,25 +43,19 @@
 					height :scale,
 					content : init_content
 				});
-				
 				var world = new Flanet.World({
 					centerPanel : Panel,
 					width : width,
 					height : height
 				});
-				var temp_content = {
-					id : "0",
-					name : "Drag it",
-					imgSrc : ""
-				}
 				for(var i = 0; i < 5; i++){
 					var s = Math.random() * (scale - 20) + 10;
 					world.addPanel(new Flanet.Panel({
-						x : x + (Math.random() * 600 - 300),
-						y : y + (Math.random() * 600 - 300),
-						width : s,
-						height : s,
-						content : temp_content
+						x : x,
+						y : y,
+						width : scale,
+						height :scale,
+						content : init_content
 					}));
 				}
 				Flanet.addWorld(world);
