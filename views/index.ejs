@@ -58,9 +58,15 @@
 				height : height
 			});
 			Flanet.addWorld(world);
-
+			var string = [
+				"This is Panel."
+				, "Just Drag it."
+				, "Click to Fb feed"
+				, "yeah~"
+				, "have a nice day~"
+			];
 			for(var i = 0 ; i < 5; i ++){
-				var s = Math.random() * (scale - 20) + 10;
+				var s = Math.random() * (scale - 10) + 30;
 				world.addPanel(new Flanet.Panel({
 					x : x + (Math.random() * 600 - 300),
 					y : y + (Math.random() * 600 - 300),
@@ -68,7 +74,7 @@
 					height : s,
 					content : {
 						id : '0',
-						name : 'Drag it~',
+						name : string[i],
 						imgSrc : '',
 					}
 				}));
