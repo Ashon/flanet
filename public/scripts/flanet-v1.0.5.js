@@ -258,7 +258,7 @@ Flanet.Panel.prototype = {
 			height : that.height * 2 - sWidth,
 			fill : "#444",
 			image : img,
-			stroke : '#'+Math.floor(Math.random()*16777215).toString(16),
+			stroke : '#' + Math.floor(Math.random()*16777215).toString(16),
 			strokeWidth : sWidth,
 			centerOffset : {
 				x : that.width - sWidth / 2,
@@ -280,7 +280,7 @@ Flanet.Panel.prototype = {
 			alpha : 0.8,
 			fontSize : 10,
 			fontFamily : "Verdana",
-			textFill : "#fff",
+			textFill : "#222",
 			align : "center",
 			verticalAlign : "middle",
 			listening : false,
