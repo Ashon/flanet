@@ -280,7 +280,7 @@ Flanet.Panel.prototype = {
 			x : that.pos.x,
 			y : that.pos.y + that.height - 5,
 			text : text,
-			alpha : 0.5,
+			alpha : 0.8,
 			fontSize : 10,
 			fontFamily : "Verdana",
 			textFill : "#fff",
