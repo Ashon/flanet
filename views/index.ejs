@@ -17,17 +17,16 @@
 	<script type="text/javascript" src='/scripts/flanet-v1.0.5.js'></script>
 </head>
 <body>
+	<div id="stage"></div>
 	<script>
 		var container = $("#stage");
 		container.width($(window).width());
 		container.height($(window).height());
 		var width = container.width();
 		var height = container.height();
-
 		var x = width * .5;
 		var y = height % .5;
 		var scale = 50;
-
 		//flanet initialize
 		Flanet.init({ container : "stage" });
 	</script>
@@ -41,7 +40,6 @@
 				&gt; Login with Facebook
 			</a>
 		</div>
-		<div id="stage"></div>
 		<script>
 			var init_content = {
 				id : "0",
@@ -108,7 +106,6 @@
 				&gt; Logout
 			</a>
 		</div>
-		<div id="stage"></div>
 		<script>
 			var Panel = new Flanet.Panel({
 				x : x,
@@ -163,7 +160,6 @@
 								name : data.data[i].name,
 								imgSrc : "https://graph.facebook.com/" + data.data[i].id  + "/picture?type=square",
 								clicked : function(){
-
 									/* remove panel
 									var panel = Flanet.getCurrentWorld().getPanelById(this.id);
 									if(panel)
