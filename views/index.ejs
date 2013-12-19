@@ -28,13 +28,12 @@
 		</div>
 		<div id="stage"></div>
 		<script>
-			var init_content = {
-				id : "0",
-				name : "Greetings~",
-				imgSrc : "",
-			}
-
 			function initialize(width, height, x, y, scale){
+				var init_content = {
+					id : "0",
+					name : "Greetings~",
+					imgSrc : ""
+				}
 				var Panel = new Flanet.Panel({
 					x : x,
 					y : y,
@@ -59,13 +58,13 @@
 						content : {
 							id : "0",
 							name : "Drag it",
-							imgSrc : "",
+							imgSrc : ""
 						}
 					}));
 				}
-
 				Flanet.addWorld(world);
 			};
+
 			var container = "stage";
 			$("#" + container).width($(window).width());
 			$("#" + container).height($(window).height());
