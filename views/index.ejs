@@ -17,8 +17,18 @@
 	<script type="text/javascript" src='/scripts/flanet-v1.0.5.js'></script>
 </head>
 <body>
+	<script>
+		var container = $("#stage");
+		container.width($(window).width());
+		container.height($(window).height());
+		var width = container.width();
+		var height = container.height();
+		//flanet initialize
+		Flanet.init({ container : "stage" });
+	</script>
+
 	<% if (!user) { %>
-		<div class="header" style="">
+		<div class="header">
 			<h2>
 				Welcome to Flanet Prototype.
 			</h2>
@@ -33,9 +43,7 @@
 				name : "Greetings~",
 				imgSrc : ""
 			}
-
 			function initialize(width, height, x, y, scale){
-
 				var Panel = new Flanet.Panel({
 					x : x,
 					y : y,
@@ -51,29 +59,23 @@
 				for(var i = 0; i < 5; i++){
 					var s = Math.random() * (scale - 20) + 10;
 					world.addPanel(new Flanet.Panel({
-						x : x,
-						y : y,
-						width : scale,
-						height :scale,
+						x : x + (Math.random() * 600 - 300),
+						y : y + (Math.random() * 600 - 300),
+						width : s,
+						height : s,
 						content : init_content
 					}));
 				}
 				Flanet.addWorld(world);
 			};
-
-			var container = "stage";
-			$("#" + container).width($(window).width());
-			$("#" + container).height($(window).height());
-			var width = $("#" + container).width();
-			var height = $("#" + container).height();
-			//flanet initialize
-			Flanet.init({ container : "stage" });
 			// test module setting
 			initialize(width, height, width/2, height/2, 50);
+
 			// flanet start
 			Flanet.start();
 		</script>
 	<% } else { %>
+		<!-- initialize fb-root -->
 		<div id="fb-root"></div>
 		<script type="text/javascript">
 			// initialize fb api
@@ -97,7 +99,7 @@
 				fjs.parentNode.insertBefore(js, fjs);
 			}(document, 'script', 'facebook-jssdk'));
 		</script>
-		<div class="header" style="padding:10px;position:fixed;width:100%;top:0;z-index:99; background:rgba(8,7,7,.5)">
+		<div class="header">
 			<h2>
 				Hello, <%= user.name.givenName %>.
 			</h2>
@@ -173,7 +175,6 @@
 								if(panel)
 									Flanet.getCurrentWorld().rmPanel(panel);
 								*/
-
 								/* feed to friend */
 								var that = this;
 								FB.ui(
@@ -191,14 +192,6 @@
 								);
 							}
 						};
-					var container = "stage";
-					$("#" + container).width($(window).width());
-					$("#" + container).height($(window).height());
-					var width = $("#" + container).width();
-					var height = $("#" + container).height();
-					// flanet initialize
-					Flanet.init({ container : "stage" });
-					// test module setting
 					fb_initialize(width, height, width/2, height/2, 50, user_content, flanet_content);
 					// flanet start
 					Flanet.start();
