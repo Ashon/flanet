@@ -256,7 +256,7 @@ Flanet.Panel.prototype = {
 			y : that.pos.y,
 			width : that.width * 2 - sWidth,
 			height : that.height * 2 - sWidth,
-			fill : "#444",
+			fill : "#f8f8f8",
 			image : img,
 			stroke : '#' + Math.floor(Math.random()*16777215).toString(16),
 			strokeWidth : sWidth,
