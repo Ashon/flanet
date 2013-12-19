@@ -4,8 +4,8 @@ var express = require('express')
   , fbStrategy = require('passport-facebook').Strategy;
 
 // need to be hidden...-,.-
-var FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID;
-var FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET;
+var FACEBOOK_APP_ID = process.env.FACEBOOK_APP_ID | '1400435640201754';
+var FACEBOOK_APP_SECRET = process.env.FACEBOOK_APP_SECRET | 'c5bfd96f8dec9520f1dd1d5795c2d623';
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -30,7 +30,7 @@ passport.deserializeUser(function(obj, done) {
 passport.use(new fbStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,
-    callbackURL: "http://flanet.herokuapp.com/auth/facebook/callback"
+    callbackURL: "http://ashon.iptime.org:3000/auth/facebook/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     // asynchronous verification, for effect...
