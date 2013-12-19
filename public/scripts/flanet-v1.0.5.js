@@ -266,9 +266,7 @@ Flanet.Panel.prototype = {
 				y : that.height - sWidth / 2
 			},
 			draggable : false,
-			listening : false,
-			filter: Kinetic.Filters.Blur,
-          	filterRadius: 20
+			listening : false
 		});
 	},
 	getImage : function(){
