@@ -10,7 +10,6 @@ MIT License
    jquery 1.7.2
    kinetic 3.9.2
    box2d 0.2.0
-
 */
 
 //Flanet Singleton

@@ -3,19 +3,16 @@
 <head>
 	<title>Flanet Project</title>
 	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=2.0, user-scalable=no" />
-
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 	<!-- css -->
 	<link href="/stylesheets/reset.css" type=text/css rel=stylesheet>
 	<link href="/stylesheets/flanet.css" type=text/css rel=stylesheet>
-
 	<!-- basic library -->
-	<script type="text/javascript" src='/scripts/kinetic-v3.9.2.js'></script>
+	<script type="text/javascript" src="/scripts/kinetic-v3.9.2.js"></script>
 	<script type="text/javascript" src="/scripts/jquery-1.7.2.js"></script>
-	<script type="text/javascript" src='/scripts/box2djs.0.2.0.jquery.min.js'></script>
-
-	<!-- flanet framework -->
-	<script type="text/javascript" src='/scripts/flanet-v1.0.5.js'></script>
+	<script type="text/javascript" src="/scripts/box2djs.0.2.0.jquery.min.js"></script>
+	<!-- flanet -->
+	<script type="text/javascript" src="/scripts/flanet-v1.0.5.js"></script>
 </head>
 <body>
 	<!-- initialize fb-root -->
@@ -55,7 +52,6 @@
 		//flanet initialize
 		Flanet.init({ container : 'stage' });
 	</script>
-
 	<% if (!user) { %>
 		<div class="header">
 			<h2>
@@ -141,9 +137,10 @@
 				height : height
 			});
 			Flanet.addWorld(world);
-			// async : get friendlist
+			// async : get friendlist - start
 			$.get('https://graph.facebook.com/me/friends'
 				, { access_token: '<%= user.token %>' }
+				// async callback function - start
 				, function(res){
 					var flanet_content = new Array();
 					var maxLength = 100;
@@ -182,7 +179,9 @@
 						}));
 					}
 				}
+				// async callback function - end
 			);
+			// async : get friendlist - end
 		</script>
 	<% } %>
 	<!-- Flanet start -->
