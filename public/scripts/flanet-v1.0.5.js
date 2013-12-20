@@ -1,15 +1,15 @@
 /*
-	Flanet 1.0.5
 
-	Copyright (C) 2012 juwon.lee
+Flanet 1.0.5
 
-	MIT License
+Copyright (C) 2012 juwon.lee
 
-	- dependency
+MIT License
 
-		jquery 1.7.2
-		kinetic 3.9.2
-		box2d 0.2.0
+- dependency
+   jquery 1.7.2
+   kinetic 3.9.2
+   box2d 0.2.0
 
 */
 
@@ -90,12 +90,12 @@ var Flanet = {
 		for(var i = 0; i < this.worldArray.length; i++)
 			if(this.worldArray[i].intersects(v))
 				return this.worldArray[i];
-		return undefined;
-	},
+			return undefined;
+		},
 
-	getCurrentWorld : function(){
-		return this.mouseEvent.world;
-	},
+		getCurrentWorld : function(){
+			return this.mouseEvent.world;
+		},
 
 	// mouseEvent module
 	mouseEvent : {
@@ -414,12 +414,12 @@ Flanet.World.prototype = {
 		for(var i = 0; i < count; ++i)
 			if(!shapes[i].m_body.IsStatic())
 				// get only one body
-				if(shapes[i].TestPoint(v)){
-					body = shapes[i].m_body;
-					break;
-				}
-		return body;
-	},
+			if(shapes[i].TestPoint(v)){
+				body = shapes[i].m_body;
+				break;
+			}
+			return body;
+		},
 
 	// get body index
 	getIndex : function(body){
@@ -429,7 +429,7 @@ Flanet.World.prototype = {
 			for(var i = 0; i < this.panelArray.length; i++)
 				if(body == this.panelArray[i].getBody())
 					return i;
-	},
+			},
 
 	// world thread control
 	start : function(){
@@ -458,14 +458,14 @@ Flanet.World.prototype = {
 
 				// center panel has gravity - panel direction is pointing centerpanel.
 				var direction = b2Math.SubtractVV(this.centerPanel.getPosition()
-												  , body.GetCenterPosition());
+					, body.GetCenterPosition());
 
 				// apply force to panel
 				body.ApplyForce(
-						b2Math.MulFV(body.m_mass * 0.01 *
-								this.getAltitute(this.panelArray[i].getPosition()), direction)
-								, this.centerPanel.getPosition()
-				);
+					b2Math.MulFV(body.m_mass * 0.01 *
+						this.getAltitute(this.panelArray[i].getPosition()), direction)
+					, this.centerPanel.getPosition()
+					);
 
 				this.panelArray[i].update();
 			}
@@ -474,8 +474,8 @@ Flanet.World.prototype = {
 			var cb = this.centerPanel.getBody();
 			var cd = b2Math.SubtractVV(this.centroid, cb.GetCenterPosition());
 			cb.ApplyForce(
-					b2Math.MulFV(cb.m_mass * this.centerPanel.getDistance(this.centroid), cd)
-								, this.centroid);
+				b2Math.MulFV(cb.m_mass * this.centerPanel.getDistance(this.centroid), cd)
+				, this.centroid);
 			this.centerPanel.update();
 			this.world.Step(timeStep, iteration);
 			this.layer.draw();
