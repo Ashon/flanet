@@ -51,6 +51,8 @@ var Flanet = {
 		queryContainer.mouseup(function(e){
 			Flanet.mouseEvent.mouseup(e);
 		});
+
+		// set kintic stage animation timer
 		this.stage.onFrame(function(frame){
 			that.step();
 		});
@@ -364,7 +366,7 @@ Flanet.World.prototype = {
 	centerPanel : undefined,
 	centroid : undefined,
 	layer : undefined,
-	panelArray : new Array(),
+	panelArray : [],
 
 	// limit boundary
 	boundary : 10000,
@@ -400,7 +402,7 @@ Flanet.World.prototype = {
 		// aabb : axis aligned bounding box
 		var aabb = new b2AABB();
 		var maxCount = 10;
-		var shapes = new Array();
+		var shapes = [];
 		var body = undefined;
 
 		// make small aabb to contact check
