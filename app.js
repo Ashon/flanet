@@ -88,14 +88,15 @@ app.get('/login', function(req, res){
 //   redirect the user back to this application at /auth/facebook/callback
 app.get('/auth/facebook',
   passport.authenticate('facebook', {
-    scope : ['user_likes',
-    , 'user_photos'
-    , 'user_status'
-    , 'user_activities'
-    , 'publish_actions'
-    , 'read_stream'
-    , 'user_groups'
-    , 'user_subscriptions'
+    scope : [
+		'user_likes'
+		, 'user_photos'
+		, 'user_status'
+		, 'user_activities'
+		, 'publish_actions'
+		, 'read_stream'
+		, 'user_groups'
+		, 'user_subscriptions'
     ]
   }),
   function(req, res){
