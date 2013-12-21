@@ -1,4 +1,4 @@
-(function(){
+(function(userId, userName, token){
 	var world = new Flanet.World({
 		centerPanel : new Flanet.Panel({
 			x : x,
@@ -6,9 +6,9 @@
 			width : scale,
 			height : scale,
 			content : {
-				id : '<%= user.id %>',
-				name : '<%= user.name.givenName %>',
-				imgSrc : 'https://graph.facebook.com/<%= user.id %>/picture?type=square',
+				id : userId,
+				name : userName,
+				imgSrc : 'https://graph.facebook.com/' + userId + '/picture?type=square',
 				clicked : function(){
 					FB.ui({
 						method : 'feed',
@@ -28,7 +28,7 @@
 	Flanet.addWorld(world);
 	// async : get friendlist - start
 	$.get('https://graph.facebook.com/me/friends'
-		, { access_token: '<%= user.token %>' }
+		, { access_token: token }
 		// async callback function - start
 		, function(res){
 			var flanet_content = new Array();
@@ -69,4 +69,4 @@
 			}
 		} // async callback function - end
 	); // async : get friendlist - end
-})();
+})(userId, userName, token);

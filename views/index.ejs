@@ -63,7 +63,6 @@
 		</div>
 		<!-- flanet initiailize -->
 		<script src="/js/init.js"></script>
-
 	<% } else { %>
 		<div class="header">
 			<h2>
@@ -74,6 +73,11 @@
 			</a>
 		</div>
 		<!-- flanet fb initiailize -->
+		<script>
+		var userId = '<%= user.id %>'
+			, userName = '<%= user.name.givenName %>'
+			, token = '<%= user.token %>';
+		</script>
 		<script src="/js/fb_init.js"></script>
 	<% } %>
 	<!-- Flanet start -->
