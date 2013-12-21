@@ -53,6 +53,29 @@
 			//flanet initialize
 			Flanet.init({ container : 'stage' });
 		</script>
+
+		<div class="blur_wrapper">
+			<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
+			<script>
+				$('canvas.blurred')[0].width = $('.header').width();
+				$('canvas.blurred')[0].height = 60;
+			</script>
+		</div>
+		<script>
+			(function(){
+				var c1 = $('.kineticjs-content').find('canvas');
+				var ctx1 = c1[0].getContext('2d');
+				var c2 = $('.blur_wrapper').find('canvas');
+				var ctx2 = c2[0].getContext('2d');
+
+				var blurry = function(){
+					ctx2.putImageData(ctx1.getImageData(0, 0, c2.width(), c2.height()), 0, 0);
+				}
+
+				Flanet.animation_extra = blurry;
+			})();
+		</script>
+		
 		<% if (!user) { %>
 			<div class="header">
 				<h2>
@@ -61,11 +84,6 @@
 				<a href="/auth/facebook">
 					&gt; Login with Facebook
 				</a>
-				<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
-				<script>
-					$('canvas.blurred')[0].width = $('.header').width();
-					$('canvas.blurred')[0].height = 60;
-				</script>
 			</div>
 			<!-- flanet initiailize -->
 			<script src="/js/init.js"></script>
@@ -77,11 +95,6 @@
 				<a href="/logout">
 					&gt; Logout
 				</a>
-				<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
-				<script>
-					$('canvas.blurred')[0].width = $('.header').width();
-					$('canvas.blurred')[0].height = 60;
-				</script>
 			</div>
 			<!-- flanet fb initiailize -->
 			<script>
