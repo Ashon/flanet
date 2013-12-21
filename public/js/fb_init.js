@@ -74,6 +74,7 @@
 				}
 			}));
 			}
+			
 		} // async callback function - end
 	); // async : get friendlist - end
 })(userId, userName, token);
