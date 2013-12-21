@@ -1,4 +1,4 @@
-function(){
+(function(){
 	var world = new Flanet.World({
 		centerPanel : new Flanet.Panel({
 			x : x,
@@ -36,4 +36,4 @@ function(){
 			}
 		}));
 	}
-}();
+})();
