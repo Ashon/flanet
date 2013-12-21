@@ -1945,6 +1945,10 @@ Kinetic.Layer.prototype = {
     clear: function() {
         var context = this.getContext();
         var canvas = this.getCanvas();
+
+        /*context.fillStyle = "rgba(240, 240, 240, 0.9)";
+        context.fillRect(0, 0, canvas.width, canvas.height);*/
+
         context.clearRect(0, 0, canvas.width, canvas.height);
     },
     /**

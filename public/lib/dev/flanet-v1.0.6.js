@@ -8,7 +8,7 @@ MIT License
 
 @dependency
    jquery 1.7.2
-   kinetic 3.9.2
+   kinetic 4.7.4
    box2d 0.2.0
 */
 
@@ -25,6 +25,9 @@ var Flanet = {
 
 	// Kinetic stage
 	stage : undefined,
+
+	// animation instance
+	animation : undefined,
 
 	// initialize
 	init : function(json){
@@ -63,15 +66,19 @@ var Flanet = {
 		});
 
 		// set kintic stage animation timer
-		this.stage.onFrame(function(frame){
+		// this.stage.onFrame(function(frame){
+		// 	that.step();
+		// });
+
+		this.animation = new Kinetic.Animation(function(frame){
 			that.step();
-		});
+		}, that.stage.getLayer(0));
 	},
 
 	// thread management
 	start : function(){
-		if(this.stage)
-			this.stage.start();
+		if(this.animation)
+			this.animation.start();
 	},
 
 	stop : function(){
@@ -273,7 +280,7 @@ Flanet.Panel.prototype = {
 
 		// kinetic image
 		var img = new Image();
-		img.src= this.content.getImgSrc();
+		img.src = this.content.getImgSrc();
 		img.onload = this.setImage(img);
 		this.setText(this.content.getName());
 	},
@@ -292,13 +299,11 @@ Flanet.Panel.prototype = {
 			// color code range #888 ~ #fff
 			stroke : '#' + Math.floor(8947848 + Math.random() * 7829367).toString(16),
 			strokeWidth : sWidth,
-			centerOffset : {
-				x : that.width - sWidth / 2,
-				y : that.height - sWidth / 2
-			},
 			draggable : false,
 			listening : false
 		});
+		this.image.setOffsetX(that.width - sWidth * .5);
+		this.image.setOffsetY(that.height - sWidth * .5);
 	},
 	getImage : function(){
 		return this.image;
@@ -307,17 +312,16 @@ Flanet.Panel.prototype = {
 		var that = this;
 		this.text = new Kinetic.Text({
 			x : that.pos.x,
-			y : that.pos.y + that.height - 5,
+			y : that.pos.y,
 			text : text,
-			alpha : 0.8,
-			fontSize : 10,
+			fontSize : 12,
 			fontFamily : "Verdana",
-			textFill : "#222",
-			align : "center",
-			verticalAlign : "middle",
+			fill : "#222",
 			listening : false,
 			draggable : false
 		});
+		this.text.setOffsetX(this.width - 10);
+		this.text.setAlign('center');
 	},
 	getText : function(){
 		return this.text;
@@ -334,7 +338,7 @@ Flanet.Panel.prototype = {
 		if(this.body){
 			this.pos.SetV(this.body.GetCenterPosition());
 			this.image.setPosition(this.pos.x, this.pos.y);
-			this.text.setPosition(this.pos.x, this.pos.y + this.height - 5);
+			this.text.setPosition(this.pos.x, this.pos.y + this.height-20);
 			this.image.setRotation(this.body.m_rotation);
 		}
 	},
