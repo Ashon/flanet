@@ -5,6 +5,13 @@
 			y : y,
 			width : scale,
 			height : scale,
+			body : {
+				friction : 1,
+				restitution : 0,
+				density : 10,
+				liniarDamping : 0.01,
+				angularDamping : 0.01
+			},
 			content : {
 				id : userId,
 				name : userName,
