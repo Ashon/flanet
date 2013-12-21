@@ -53,10 +53,6 @@
 			//flanet initialize
 			Flanet.init({ container : 'stage' });
 		</script>
-
-		<div class="blur_wrapper">
-			<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
-		</div>
 		<% if (!user) { %>
 			<div class="header">
 				<h2>
@@ -86,22 +82,6 @@
 			<script src="/js/fb_init.js"></script>
 		<% } %>
 		<!-- Flanet start -->
-
-		<script>
-			(function(){
-				$('canvas.blurred')[0].width = $('.header').width();
-				$('canvas.blurred')[0].height = 60;
-
-				var c1 = $('.kineticjs-content').find('canvas');
-				var ctx1 = c1[0].getContext('2d');
-				var c2 = $('.blur_wrapper').find('canvas');
-				var ctx2 = c2[0].getContext('2d');
-
-				Flanet.animation_extra = function(){
-					ctx2.putImageData(ctx1.getImageData(0, 0, c2.width(), c2.height()), 0, 0);
-				};
-			});
-		</script>
 
 		<script>
 			Flanet.start();
