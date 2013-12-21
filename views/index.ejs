@@ -97,11 +97,9 @@
 				var c2 = $('.blur_wrapper').find('canvas');
 				var ctx2 = c2[0].getContext('2d');
 
-				var blurry = function(){
+				Flanet.animation_extra = function(){
 					ctx2.putImageData(ctx1.getImageData(0, 0, c2.width(), c2.height()), 0, 0);
-				}
-
-				Flanet.animation_extra = blurry;
+				};
 			})();
 		</script>
 

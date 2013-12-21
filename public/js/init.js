@@ -52,15 +52,4 @@
 			}
 		}));
 	}
-
-	var c1 = $('.kineticjs-content').find('canvas');
-	var ctx1 = c1[0].getContext('2d');
-	var c2 = $('.header').find('canvas');
-	var ctx2 = c2[0].getContext('2d');
-
-	var blurry = function(){
-		ctx2.putImageData(ctx1.getImageData(0, 0, c2.width(), c2.height()), 0, 0);
-	}
-
-	Flanet.animation_extra = blurry;
 })();
