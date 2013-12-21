@@ -11,7 +11,10 @@ exports.index = function(req, res){
 			},
 			title : 'Flanet Project',
 			user : undefined,
-			loginfo : '<a href="/auth/facebook">&gt; Login with Facebook</a>'
+			loginfo : {
+				href : '/auth/facebook',
+				text : '> Login with Facebook'
+			}
 		});
 	else
 		res.render('index', {
@@ -20,7 +23,10 @@ exports.index = function(req, res){
 			},
 			title : 'Hello ' + req.user.id,
 			user : req.user,
-			loginfo : '<a href="/logout">&gt; Logout</a>'
+			loginfo : {
+				href :'/logout',
+				text : '> Logout'
+			}
 		});
 	// console.log(req);
 };
