@@ -18,39 +18,43 @@
 	<!-- initialize fb-root -->
 	<div id="fb-root"></div>
 	<script type="text/javascript">
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId      : '<%= app.id %>',
-				status     : true,
-				cookie     : true,
-				xfbml      : true
-			});
-			FB.Event.subscribe('auth.login', function(res) {
-				window.location = window.location;
-			});
-			FB.Canvas.setAutoGrow();
-		};
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src = '//connect.facebook.net/en_US/all.js';
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
+		(function(){
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId      : '<%= app.id %>',
+					status     : true,
+					cookie     : true,
+					xfbml      : true
+				});
+				FB.Event.subscribe('auth.login', function(res) {
+					window.location = window.location;
+				});
+				FB.Canvas.setAutoGrow();
+			};
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
+				js.src = '//connect.facebook.net/en_US/all.js';
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		})();
 	</script>
 	<!-- initialize flanet stage -->
 	<div id="stage"></div>
 	<script>
-		var container = $('#stage');
-		container.width($(window).width());
-		container.height($(window).height());
-		var width = container.width();
-		var height = container.height();
-		var x = width * .5;
-		var y = height * .5;
-		var scale = 50;
-		//flanet initialize
-		Flanet.init({ container : 'stage' });
+		(function(){
+			var container = $('#stage');
+			container.width($(window).width());
+			container.height($(window).height());
+			var width = container.width();
+			var height = container.height();
+			var x = width * .5;
+			var y = height * .5;
+			var scale = 50;
+			//flanet initialize
+			Flanet.init({ container : 'stage' });
+		})();
 	</script>
 	<% if (!user) { %>
 		<div class="header">
@@ -61,8 +65,9 @@
 				&gt; Login with Facebook
 			</a>
 		</div>
-		<script src="/js/init.js">
-		</script>
+		<!-- flanet initiailize -->
+		<script src="/js/init.js"></script>
+
 	<% } else { %>
 		<div class="header">
 			<h2>
@@ -72,80 +77,8 @@
 				&gt; Logout
 			</a>
 		</div>
-		<script>
-			var world = new Flanet.World({
-				centerPanel : new Flanet.Panel({
-					x : x,
-					y : y,
-					width : scale,
-					height : scale,
-					content : {
-						id : '<%= user.id %>',
-						name : '<%= user.name.givenName %>',
-						imgSrc : 'https://graph.facebook.com/<%= user.id %>/picture?type=square',
-						clicked : function(){
-							FB.ui({
-								method : 'feed',
-								link : $(this).attr('data-url')
-							},
-							function(res){
-								if (res != null)
-									logResponse(res);
-							});
-						},
-						dragged : function(){}
-					}
-				}),
-				width : width,
-				height : height
-			});
-			Flanet.addWorld(world);
-			// async : get friendlist - start
-			$.get('https://graph.facebook.com/me/friends'
-				, { access_token: '<%= user.token %>' }
-				// async callback function - start
-				, function(res){
-					var flanet_content = new Array();
-					var maxLength = 100;
-					var length = maxLength > res.data.length ? res.data.length : maxLength;
-					for(var i = 0; i < length; i++){
-						var s = Math.random() * (scale - 20) + 10;
-						world.addPanel(new Flanet.Panel({
-							x : x + (Math.random() * 600 - 300),
-							y : y + (Math.random() * 600 - 300),
-							width : s,
-							height : s,
-							content : {
-								id : res.data[i].id,
-								name : res.data[i].name,
-								imgSrc : 'https://graph.facebook.com/' + res.data[i].id  + '/picture?type=square',
-								clicked : function(){
-									/* remove panel
-									var panel = Flanet.getCurrentWorld().getPanelById(this.id);
-									if(panel)
-										Flanet.getCurrentWorld().rmPanel(panel);
-									*/
-									/* feed to friend */
-									var that = this;
-									FB.ui({
-											method: 'stream.publish',
-											link: $(this).attr('data-url'),
-											target_id: this.id,
-											display: 'iframe'
-										}, function(res){
-											if (res != null)
-												logResponse(res);
-										}
-									);
-								}
-							}
-						}));
-					}
-				}
-				// async callback function - end
-			);
-			// async : get friendlist - end
-		</script>
+		<!-- flanet fb initiailize -->
+		<script src="/js/fb_init.js"></script>
 	<% } %>
 	<!-- Flanet start -->
 	<script>
