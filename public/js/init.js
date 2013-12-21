@@ -7,7 +7,7 @@
 			height :scale,
 			body : {
 				friction : 1,
-				restitution : 0,
+				restitution : 0.01,
 				density : 10,
 				liniarDamping : 0.01,
 				angularDamping : 0.01
@@ -42,8 +42,8 @@
 				friction : 1,
 				restitution : .01,
 				density : 1,
-				liniarDamping : 0.04,
-				angularDamping : 0.02
+				liniarDamping : 0.05,
+				angularDamping : 0.05
 			},
 			content : {
 				id : '0',
