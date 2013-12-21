@@ -499,7 +499,7 @@ Flanet.World.prototype = {
 						this.getAltitute(this.panelArray[i].getPosition()), direction);
 				
 				// trim force amount
-				scala = b2Math.b2Clamp(scala, 0.0, 5.0);
+				scala = scala > 5 ? 5 : scala;
 
 				// apply force to panel
 				body.ApplyForce(scala, this.centerPanel.getPosition());
