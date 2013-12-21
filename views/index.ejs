@@ -53,32 +53,19 @@
 			//flanet initialize
 			Flanet.init({ container : 'stage' });
 		</script>
-		<% if (!user) { %>
-			<div class="header">
-				<h2>
-					Welcome to Flanet Project.
-				</h2>
-				<h4>
-					Flanet is stable in chrome browser.
-				</h4>
-				<a href="/auth/facebook">
-					&gt; Login with Facebook
-				</a>
-			</div>
+		<div class="header">
+			<h2>
+				<%= title %>
+			</h2>
+			<h4 style="color:#888">
+				Flanet is stable in chrome browser.
+			</h4>
+			<%= loginfo %>
+		</div>
+		<% if(!user) { %>
 			<!-- flanet initiailize -->
 			<script src="/js/init.js"></script>
 		<% } else { %>
-			<div class="header">
-				<h2>
-					Hello, <%= user.name.givenName %>.
-				</h2>
-				<h4>
-					Flanet is stable in chrome browser.
-				</h4>
-				<a href="/logout">
-					&gt; Logout
-				</a>
-			</div>
 			<!-- flanet fb initiailize -->
 			<script>
 			var userId = '<%= user.id %>'

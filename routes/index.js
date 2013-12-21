@@ -4,6 +4,23 @@
 */
 
 exports.index = function(req, res){
-	res.render('index', { app : {id : process.env.FACEBOOK_APP_ID}, user: req.user });
-	console.log(req);
+	if(req.user)
+		res.render('index', {
+			app : {
+				id : process.env.FACEBOOK_APP_ID
+			},
+			title : 'Hello ' + req.user.id,
+			user : req.user,
+			loginfo : '<a href="/auth/facebook">&gt; Login with Facebook</a>'
+		});
+	else
+		res.render('index', {
+			app : {
+				id : process.env.FACEBOOK_APP_ID
+			},
+			title : 'Hello ' + req.user.id,
+			user : req.user,
+			loginfo : '<a href="/logout">&gt; Logout</a>'
+		});
+	// console.log(req);
 };
