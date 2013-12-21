@@ -67,7 +67,7 @@ app.configure(function() {
 });
 
 // page routing
-app.get('/', routes.index(req,res));
+app.get('/', routes.index);
 
 app.get('/account', ensureAuthenticated, function(req, res){
   res.render('account', { app : {id : FACEBOOK_APP_ID}, user: req.user });
