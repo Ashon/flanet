@@ -55,33 +55,33 @@
 		</script>
 		<% if (!user) { %>
 			<div class="header">
-				<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
-				<script>
-					$('canvas.blurred')[0].width = $('.header').width();
-					$('canvas.blurred')[0].height = 60;
-				</script>
 				<h2>
 					Welcome to Flanet Project.
 				</h2>
 				<a href="/auth/facebook">
 					&gt; Login with Facebook
 				</a>
-			</div>
-			<!-- flanet initiailize -->
-			<script src="/js/init.js"></script>
-		<% } else { %>
-			<div class="header">
 				<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
 				<script>
 					$('canvas.blurred')[0].width = $('.header').width();
 					$('canvas.blurred')[0].height = 60;
 				</script>
+			</div>
+			<!-- flanet initiailize -->
+			<script src="/js/init.js"></script>
+		<% } else { %>
+			<div class="header">
 				<h2>
 					Hello, <%= user.name.givenName %>.
 				</h2>
 				<a href="/logout">
 					&gt; Logout
 				</a>
+				<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
+				<script>
+					$('canvas.blurred')[0].width = $('.header').width();
+					$('canvas.blurred')[0].height = 60;
+				</script>
 			</div>
 			<!-- flanet fb initiailize -->
 			<script>
