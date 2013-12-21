@@ -1916,7 +1916,7 @@ Kinetic.GlobalObject.extend(Kinetic.Stage, Kinetic.Node);
  */
 Kinetic.Layer = function(config) {
     this.nodeType = 'Layer';
-    
+
     this.canvas = document.createElement('canvas');
     this.context = this.canvas.getContext('2d');
     this.canvas.style.position = 'absolute';
@@ -2001,7 +2001,7 @@ Kinetic.GlobalObject.extend(Kinetic.Layer, Kinetic.Node);
  */
 Kinetic.Group = function(config) {
     this.nodeType = 'Group';;
-    
+
     // call super constructors
     Kinetic.Container.apply(this, []);
     Kinetic.Node.apply(this, [config]);
