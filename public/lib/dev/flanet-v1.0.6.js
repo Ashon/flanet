@@ -495,10 +495,10 @@ Flanet.World.prototype = {
 				var direction = b2Math.SubtractVV(this.centerPanel.getPosition()
 					, body.GetCenterPosition());
 
-				
 				var force = b2Math.MulFV(body.m_mass * 0.01 *
 						this.getAltitute(this.panelArray[i].getPosition()), direction);
-				force = force > 10 ? 10 : force;
+
+				force = force > 5 ? 5 : force;
 				// apply force to panel
 				body.ApplyForce(force, this.centerPanel.getPosition());
 
