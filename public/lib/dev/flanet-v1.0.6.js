@@ -342,7 +342,7 @@ Flanet.Panel.prototype = {
 		if(this.body){
 			this.pos.SetV(this.body.GetCenterPosition());
 			this.image.setPosition(this.pos.x, this.pos.y);
-			this.text.setPosition(this.pos.x, this.pos.y + this.height-20);
+			this.text.setPosition(this.pos.x, this.pos.y + this.height - 20);
 			this.image.setRotation(this.body.m_rotation);
 		}
 	},
@@ -464,7 +464,7 @@ Flanet.World.prototype = {
 			for(var i = 0; i < this.panelArray.length; i++)
 				if(body == this.panelArray[i].getBody())
 					return i;
-			},
+	},
 
 	// world thread control
 	start : function(){
@@ -499,7 +499,7 @@ Flanet.World.prototype = {
 						this.getAltitute(this.panelArray[i].getPosition()), direction);
 				
 				// trim force amount
-				scala = scala > 5 ? 5 : scala;
+				scala = scala > 3 ? 3 : scala;
 
 				// apply force to panel
 				body.ApplyForce(scala, this.centerPanel.getPosition());
