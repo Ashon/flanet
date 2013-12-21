@@ -1,89 +1,89 @@
 <!DOCTYPE html>
 <html xmlns:fb="http://ogp.me/ns/fb#" lang="en">
-<head>
-	<title>Flanet Project</title>
-	<meta charset="utf-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-	<!-- css -->
-	<link href="/css/reset.css" type=text/css rel=stylesheet>
-	<link href="/css/flanet.css" type=text/css rel=stylesheet>
-	<!-- basic library -->
-	<script type="text/javascript" src="/lib/kinetic-v3.9.2.js"></script>
-	<script type="text/javascript" src="/lib/jquery-1.7.2.js"></script>
-	<script type="text/javascript" src="/lib/box2djs.0.2.0.jquery.min.js"></script>
-	<!-- flanet -->
-	<script type="text/javascript" src="/lib/flanet-v1.0.5.js"></script>
-</head>
-<body>
-	<!-- initialize fb-root -->
-	<div id="fb-root"></div>
-	<script type="text/javascript">
-		window.fbAsyncInit = function() {
-			FB.init({
-				appId      : '<%= app.id %>',
-				status     : true,
-				cookie     : true,
-				xfbml      : true
-			});
-			FB.Event.subscribe('auth.login', function(res) {
-				window.location = window.location;
-			});
-			FB.Canvas.setAutoGrow();
-		};
-		(function(d, s, id) {
-			var js, fjs = d.getElementsByTagName(s)[0];
-			if (d.getElementById(id)) return;
-			js = d.createElement(s); js.id = id;
-			js.src = '//connect.facebook.net/en_US/all.js';
-			fjs.parentNode.insertBefore(js, fjs);
-		}(document, 'script', 'facebook-jssdk'));
-	</script>
-	<!-- initialize flanet stage -->
-	<div id="stage"></div>
-	<script>
-		var container = $('#stage');
-		container.width($(window).width());
-		container.height($(window).height());
-		var width = container.width();
-		var height = container.height();
-		var x = width * .5;
-		var y = height * .5;
-		var scale = 50;
-		//flanet initialize
-		Flanet.init({ container : 'stage' });
-	</script>
-	<% if (!user) { %>
-		<div class="header">
-			<h2>
-				Welcome to Flanet Project.
-			</h2>
-			<a href="/auth/facebook">
-				&gt; Login with Facebook
-			</a>
-		</div>
-		<!-- flanet initiailize -->
-		<script src="/js/init.js"></script>
-	<% } else { %>
-		<div class="header">
-			<h2>
-				Hello, <%= user.name.givenName %>.
-			</h2>
-			<a href="/logout">
-				&gt; Logout
-			</a>
-		</div>
-		<!-- flanet fb initiailize -->
-		<script>
-		var userId = '<%= user.id %>'
-			, userName = '<%= user.name.givenName %>'
-			, token = '<%= user.token %>';
+	<head>
+		<title>Flanet Project</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+		<!-- css -->
+		<link href="/css/reset.css" type=text/css rel=stylesheet>
+		<link href="/css/flanet.css" type=text/css rel=stylesheet>
+		<!-- basic library -->
+		<script type="text/javascript" src="/lib/kinetic-v3.9.2.js"></script>
+		<script type="text/javascript" src="/lib/jquery-1.7.2.js"></script>
+		<script type="text/javascript" src="/lib/box2djs.0.2.0.jquery.min.js"></script>
+		<!-- flanet -->
+		<script type="text/javascript" src="/lib/flanet-v1.0.5.js"></script>
+	</head>
+	<body>
+		<!-- initialize fb-root -->
+		<div id="fb-root"></div>
+		<script type="text/javascript">
+			window.fbAsyncInit = function() {
+				FB.init({
+					appId      : '<%= app.id %>',
+					status     : true,
+					cookie     : true,
+					xfbml      : true
+				});
+				FB.Event.subscribe('auth.login', function(res) {
+					window.location = window.location;
+				});
+				FB.Canvas.setAutoGrow();
+			};
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
+				js.src = '//connect.facebook.net/en_US/all.js';
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
 		</script>
-		<script src="/js/fb_init.js"></script>
-	<% } %>
-	<!-- Flanet start -->
-	<script>
-		Flanet.start();
-	</script>
-	<div class="copyright"><p>Flanet v1.0.5<br/>copyright(c) juwon.lee all rights reserved.</p></div>
-</body>
+		<!-- initialize flanet stage -->
+		<div id="stage"></div>
+		<script>
+			var container = $('#stage');
+			container.width($(window).width());
+			container.height($(window).height());
+			var width = container.width();
+			var height = container.height();
+			var x = width * .5;
+			var y = height * .5;
+			var scale = 50;
+			//flanet initialize
+			Flanet.init({ container : 'stage' });
+		</script>
+		<% if (!user) { %>
+			<div class="header">
+				<h2>
+					Welcome to Flanet Project.
+				</h2>
+				<a href="/auth/facebook">
+					&gt; Login with Facebook
+				</a>
+			</div>
+			<!-- flanet initiailize -->
+			<script src="/js/init.js"></script>
+		<% } else { %>
+			<div class="header">
+				<h2>
+					Hello, <%= user.name.givenName %>.
+				</h2>
+				<a href="/logout">
+					&gt; Logout
+				</a>
+			</div>
+			<!-- flanet fb initiailize -->
+			<script>
+			var userId = '<%= user.id %>'
+				, userName = '<%= user.name.givenName %>'
+				, token = '<%= user.token %>';
+			</script>
+			<script src="/js/fb_init.js"></script>
+		<% } %>
+		<!-- Flanet start -->
+		<script>
+			Flanet.start();
+		</script>
+		<div class="copyright"><p>Flanet v1.0.5<br/>copyright(c) juwon.lee all rights reserved.</p></div>
+	</body>
 </html>
