@@ -21,7 +21,7 @@ exports.index = function(req, res){
 			app : {
 				id : process.env.FACEBOOK_APP_ID
 			},
-			title : 'Hello ' + req.user.id,
+			title : 'Hello ' + req.user.name.givenName,
 			user : req.user,
 			loginfo : {
 				href :'/logout',
