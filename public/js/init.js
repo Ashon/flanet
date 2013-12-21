@@ -24,11 +24,11 @@
 	Flanet.addWorld(world);
 
 	var string = [
-	"This is Panel."
-	, "Just Drag it."
-	, "Click to Fb feed"
-	, "yeah~"
-	, "have a nice day~"
+	"This is Panel.",
+	"Just Drag it.",
+	"Click to Fb feed",
+	"yeah~",
+	"have a nice day~"
 	];
 
 	for(var i = 0 ; i < 5; i ++){
@@ -42,7 +42,7 @@
 				friction : 1,
 				restitution : .01,
 				density : 1,
-				liniarDamping : 0.06,
+				liniarDamping : 0.0,
 				angularDamping : 0.02
 			},
 			content : {

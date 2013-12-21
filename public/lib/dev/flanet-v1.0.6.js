@@ -69,7 +69,7 @@ var Flanet = {
 
 		// set kintic stage animation timer
 		// this.stage.onFrame(function(frame){
-		// 	that.step();
+		// that.step();
 		// });
 
 		this.animation = new Kinetic.Animation(function(frame){
@@ -97,7 +97,7 @@ var Flanet = {
 					world.stop();*/
 			}
 		}
-		if(this.animation_extra != undefined)
+		if(this.animation_extra !== undefined)
 			this.animation_extra();
 	},
 
@@ -267,7 +267,7 @@ Flanet.Panel.prototype = {
 		this.bodyDef = new b2BodyDef();
 
 		var body;
-		if(json.body == undefined)
+		if(json.body === undefined)
 			body = this.physics;
 		else
 			body = json.body;
@@ -306,8 +306,8 @@ Flanet.Panel.prototype = {
 			draggable : false,
 			listening : false
 		});
-		this.image.setOffsetX(that.width - sWidth * .5);
-		this.image.setOffsetY(that.height - sWidth * .5);
+		this.image.setOffsetX(that.width - sWidth * 0.5);
+		this.image.setOffsetY(that.height - sWidth * 0.5);
 	},
 	getImage : function(){
 		return this.image;
@@ -438,7 +438,7 @@ Flanet.World.prototype = {
 		var aabb = new b2AABB();
 		var maxCount = 10;
 		var shapes = [];
-		var body = undefined;
+		var body4;
 
 		// make small aabb to contact check
 		aabb.minVertex.Set(v.x - 1, v.y - 1);
@@ -492,8 +492,8 @@ Flanet.World.prototype = {
 				var body = this.panelArray[i].getBody();
 
 				// center panel has a gravity - panel direction is pointing centerpanel.
-				var direction = b2Math.SubtractVV(this.centerPanel.getPosition()
-					, body.GetCenterPosition());
+				var direction = b2Math.SubtractVV(this.centerPanel.getPosition(),
+					body.GetCenterPosition());
 
 				var scala = b2Math.MulFV(body.m_mass * 0.01 *
 						this.getAltitute(this.panelArray[i].getPosition()), direction);
@@ -511,8 +511,8 @@ Flanet.World.prototype = {
 			var cb = this.centerPanel.getBody();
 			var cd = b2Math.SubtractVV(this.centroid, cb.GetCenterPosition());
 			cb.ApplyForce(
-				b2Math.MulFV(cb.m_mass * this.centerPanel.getDistance(this.centroid), cd)
-				, this.centroid);
+				b2Math.MulFV(cb.m_mass * this.centerPanel.getDistance(this.centroid), cd),
+					this.centroid);
 			this.centerPanel.update();
 			this.world.Step(timeStep, iteration);
 			this.layer.draw();
@@ -586,7 +586,7 @@ Flanet.World.prototype = {
 		return s / this.panelArray.length;
 	},
 	intersects : function(v){
-		if(this.getBody(v) != undefined){
+		if(this.getBody(v) !== undefined){
 			return true;
 		}
 	}

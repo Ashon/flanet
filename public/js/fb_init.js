@@ -22,7 +22,7 @@
 						link : $(this).attr('data-url')
 					},
 					function(res){
-						if (res != null)
+						if (res !== null)
 							logResponse(res);
 					});
 				},
@@ -34,11 +34,10 @@
 	});
 	Flanet.addWorld(world);
 	// async : get friendlist - start
-	$.get('https://graph.facebook.com/me/friends'
-		, { access_token: token }
+	$.get('https://graph.facebook.com/me/friends',{ access_token: token },
 		// async callback function - start
-		, function(res){
-			var flanet_content = new Array();
+		function(res){
+			var flanet_content = [];
 			var maxLength = 100;
 			var length = maxLength > res.data.length ? res.data.length : maxLength;
 			for(var i = 0; i < length; i++){
@@ -66,7 +65,7 @@
 							target_id: this.id,
 							display: 'iframe'
 						}, function(res){
-							if (res != null)
+							if (res !== null)
 								logResponse(res);
 						}
 						);
