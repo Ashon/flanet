@@ -4,13 +4,13 @@
 */
 
 exports.index = function(req, res){
-	if(req.user)
+	if(!req.user)
 		res.render('index', {
 			app : {
 				id : process.env.FACEBOOK_APP_ID
 			},
-			title : 'Hello ' + req.user.id,
-			user : req.user,
+			title : 'Flanet Project',
+			user : undefined,
 			loginfo : '<a href="/auth/facebook">&gt; Login with Facebook</a>'
 		});
 	else
