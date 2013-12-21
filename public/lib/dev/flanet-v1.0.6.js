@@ -491,16 +491,16 @@ Flanet.World.prototype = {
 			for(var i = 0; i < this.panelArray.length; i++){
 				var body = this.panelArray[i].getBody();
 
-				// center panel has gravity - panel direction is pointing centerpanel.
+				// center panel has a gravity - panel direction is pointing centerpanel.
 				var direction = b2Math.SubtractVV(this.centerPanel.getPosition()
 					, body.GetCenterPosition());
 
+				
+				var force = b2Math.MulFV(body.m_mass * 0.01 *
+						this.getAltitute(this.panelArray[i].getPosition()), direction);
+				force = force > 10 ? 10 : force;
 				// apply force to panel
-				body.ApplyForce(
-					b2Math.MulFV(body.m_mass * 0.01 *
-						this.getAltitute(this.panelArray[i].getPosition()), direction)
-					, this.centerPanel.getPosition()
-					);
+				body.ApplyForce(force, this.centerPanel.getPosition());
 
 				this.panelArray[i].update();
 			}
