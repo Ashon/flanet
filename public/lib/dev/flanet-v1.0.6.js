@@ -29,6 +29,8 @@ var Flanet = {
 	// animation instance
 	animation : undefined,
 
+	animation_extra : undefined,
+
 	// initialize
 	init : function(json){
 		var that = this;
@@ -95,6 +97,8 @@ var Flanet = {
 					world.stop();*/
 			}
 		}
+		if(this.animation_extra != undefined)
+			this.animation_extra();
 	},
 
 	// world management

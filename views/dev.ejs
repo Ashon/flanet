@@ -33,6 +33,11 @@
 		Flanet.init({ container : 'stage' });
 	</script>
 	<div class="header">
+		<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
+		<script>
+			$('canvas.blurred')[0].width = $('.header').width();
+			$('canvas.blurred')[0].height = 60;
+		</script>
 		<h2>
 			Welcome to Flanet Project. - Debug mode
 		</h2>
