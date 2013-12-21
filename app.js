@@ -1,5 +1,6 @@
 var express = require('express')
   , util = require('util')
+  , routes = require('./routes')
   , passport = require('passport')
   , fbStrategy = require('passport-facebook').Strategy;
 
@@ -66,10 +67,7 @@ app.configure(function() {
 });
 
 // page routing
-app.get('/', function(req, res){
-  res.render('index', { app : {id : FACEBOOK_APP_ID}, user: req.user });
-  console.log(req);
-});
+app.get('/', routes.index(req,res));
 
 app.get('/account', ensureAuthenticated, function(req, res){
   res.render('account', { app : {id : FACEBOOK_APP_ID}, user: req.user });
