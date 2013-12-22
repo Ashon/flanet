@@ -8,7 +8,7 @@
  *   kinetic 4.7.4
  *   box2d 0.2.0
 */
-
+//
 // simple flanet Singleton
 var Flanet = {
 	// flanet world array
