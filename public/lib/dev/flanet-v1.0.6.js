@@ -1,15 +1,15 @@
 /*
-** 
-** Flanet 1.0.5
-** Copyright (C) 2012 juwon.lee
-** MIT License
-** @dependency
-**   jquery 1.7.2
-**   kinetic 4.7.4
-**   box2d 0.2.0
+ * Flanet v1.0.6
+ * MIT Licensed.
+ * Copyright (C) 2012 juwon.lee
+ *
+ * @dependency
+ *   jquery 1.7.2
+ *   kinetic 4.7.4
+ *   box2d 0.2.0
 */
 
-//Flanet Singleton
+// simple flanet Singleton
 var Flanet = {
 	// flanet world array
 	worldArray : [],
