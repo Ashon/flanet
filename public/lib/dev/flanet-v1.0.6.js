@@ -28,7 +28,7 @@ var Flanet = {
 
 	animation_extra : undefined,
 
-	// initialize
+	// initialize/
 	init : function(json){
 		var that = this;
 		var queryContainer = $("#" + json.container);
@@ -70,12 +70,12 @@ var Flanet = {
 		this.stage.onFrame(function(frame){
 			that.step();
 		});
-*/
+		*/
 
-this.animation = new Kinetic.Animation(function(frame){
-	that.step();
-}, that.stage.getLayer(0));
-},
+		this.animation = new Kinetic.Animation(function(frame){
+			that.step();
+		}, that.stage.getLayer(0));
+		},
 
 	// thread management
 	start : function(){
