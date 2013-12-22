@@ -70,11 +70,26 @@ app.configure(function () {
 
 // page routing
 app.get('/', routes.index);
-app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', { app : { id : FACEBOOK_APP_ID }, user: req.user });
-  console.log(req);
+
+app.get('/account', ensureAuthenticated, function (req, res) {
+	res.render('account', {
+		app: {
+			id: FACEBOOK_APP_ID
+		},
+		user: req.user
+	});
+	console.log(req);
 });
-app.get('/login', routes.login);
+
+app.get('/login', function (req, res) {
+	res.render('login', {
+		app: {
+			id: FACEBOOK_APP_ID
+		},
+		user: req.user
+	});
+	console.log(req);
+});
 
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the
