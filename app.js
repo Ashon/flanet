@@ -70,26 +70,8 @@ app.configure(function () {
 
 // page routing
 app.get('/', routes.index);
-
-app.get('/account', ensureAuthenticated, function (req, res) {
-	res.render('account', {
-		app: {
-			id: FACEBOOK_APP_ID
-		},
-		user: req.user
-	});
-	console.log(req);
-});
-
-app.get('/login', function (req, res) {
-	res.render('login', {
-		app: {
-			id: FACEBOOK_APP_ID
-		},
-		user: req.user
-	});
-	console.log(req);
-});
+app.get('/account', ensureAuthenticated, routes.account);
+app.get('/login', routes.login);
 
 // GET /auth/facebook
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -122,18 +104,17 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback',
 	passport.authenticate('facebook', {
 		successRedirect: '/',
-		failureRedirect: '/login'
+		failureRedirect: '/'
 	}),
 	function (req, res) {
 		res.redirect('/');
 	}
-	);
+);
 
 app.get('/logout', function (req, res) {
 	req.logout();
 	res.redirect('/');
 });
-
 
 app.listen(port, function () {
 	console.log("http listen : " + port);

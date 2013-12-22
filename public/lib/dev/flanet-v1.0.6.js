@@ -10,7 +10,7 @@ MIT License
    jquery 1.7.2
    kinetic 4.7.4
    box2d 0.2.0
-*/
+   */
 
 //Flanet Singleton
 var Flanet = {
@@ -67,10 +67,13 @@ var Flanet = {
 			that.stage.draw();
 		});
 
-		// set kintic stage animation timer
-		// this.stage.onFrame(function(frame){
-		// that.step();
-		// });
+		/* kinetic 3.9.2
+		** set kinetic stage animation timer
+		
+		this.stage.onFrame(function(frame){
+			that.step();
+		});
+		*/
 
 		this.animation = new Kinetic.Animation(function(frame){
 			that.step();
@@ -93,8 +96,10 @@ var Flanet = {
 			var world = this.worldArray[i];
 			if(world.getActivation()){
 				world.step(this.timestep, this.iteration);
-				/*if(world.getAvgSpeed() < 1 && !this.mouseEvent.drag)
-					world.stop();*/
+				/* for get better performance when idle state
+				if(world.getAvgSpeed() < 1 && !this.mouseEvent.drag)
+				world.stop();
+				*/
 			}
 		}
 		if(this.animation_extra !== undefined)
@@ -132,6 +137,8 @@ var Flanet = {
 		mJoint : undefined,
 		body : undefined,
 		world : undefined,
+		bigScala : 100000000000,
+
 		mousedown : function(e){
 			this.drag = true;
 			this.moved = false;
@@ -204,7 +211,7 @@ var Flanet = {
 				md.body1 = this.world.getWorld().m_groundBody;
 				md.body2 = this.body;
 				md.target.Set(this.mPos.x, this.mPos.y);
-				md.maxForce = 100000000000 * this.body.m_mass;
+				md.maxForce = this.bigScala * this.body.m_mass;
 				md.timeStep = Flanet.timestep;
 				if(!this.mJoint)
 					this.mJoint = this.world.getWorld().CreateJoint(md);
@@ -415,7 +422,7 @@ Flanet.World.prototype = {
 	//initialize
 	init : function(json){
 		this.panelArray = [];
-		this.centroid = new b2Vec2(this.width / 2, this.height / 2);
+		this.centroid = new b2Vec2(this.width * 0.5, this.height * 0.5);
 		this.width = json.width;
 		this.height = json.height;
 		var worldAABB = new b2AABB();
@@ -464,7 +471,7 @@ Flanet.World.prototype = {
 			for(var i = 0; i < this.panelArray.length; i++)
 				if(body == this.panelArray[i].getBody())
 					return i;
-	},
+			},
 
 	// world thread control
 	start : function(){
@@ -496,7 +503,7 @@ Flanet.World.prototype = {
 					body.GetCenterPosition());
 
 				var scala = b2Math.MulFV(body.m_mass * 0.01 *
-						this.getAltitute(this.panelArray[i].getPosition()), direction);
+					this.getAltitute(this.panelArray[i].getPosition()), direction);
 				
 				// trim force amount
 				scala = scala > 3 ? 3 : scala;
@@ -512,7 +519,7 @@ Flanet.World.prototype = {
 			var cd = b2Math.SubtractVV(this.centroid, cb.GetCenterPosition());
 			cb.ApplyForce(
 				b2Math.MulFV(cb.m_mass * this.centerPanel.getDistance(this.centroid), cd),
-					this.centroid);
+				this.centroid);
 			this.centerPanel.update();
 			this.world.Step(timeStep, iteration);
 			this.layer.draw();

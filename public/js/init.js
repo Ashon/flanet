@@ -40,7 +40,7 @@
 			height : s,
 			body : {
 				friction : 1,
-				restitution : .01,
+				restitution : 0.01,
 				density : 1,
 				liniarDamping : 0.02,
 				angularDamping : 0.02
