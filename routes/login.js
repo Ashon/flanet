@@ -5,5 +5,5 @@ exports.login = function (req, res) {
 		},
 		user: req.user
 	});
-	console.log(req);//
+	console.log(req);
 };

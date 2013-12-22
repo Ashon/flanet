@@ -71,8 +71,9 @@ app.configure(function () {
 // page routing
 app.get('/', routes.index);
 app.get('/account', ensureAuthenticated, function(req, res){
-  res.render('account', { app : {id : FACEBOOK_APP_ID}, user: req.user });
-  console.log(req)});
+  res.render('account', { app : { id : FACEBOOK_APP_ID }, user: req.user });
+  console.log(req);
+});
 app.get('/login', routes.login);
 
 // GET /auth/facebook
@@ -106,7 +107,7 @@ app.get('/auth/facebook',
 app.get('/auth/facebook/callback',
 	passport.authenticate('facebook', {
 		successRedirect: '/',
-		failureRedirect: '/'
+		failureRedirect: '/login'
 	}),
 	function (req, res) {
 		res.redirect('/');
