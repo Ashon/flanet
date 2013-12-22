@@ -42,7 +42,7 @@
 				friction : 1,
 				restitution : 0.01,
 				density : 1,
-				liniarDamping : 0.02,
+				liniarDamping : 0.0,
 				angularDamping : 0.02
 			},
 			content : {
