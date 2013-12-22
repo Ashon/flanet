@@ -1,16 +1,13 @@
 /*
-
-Flanet 1.0.5
-
-Copyright (C) 2012 juwon.lee
-
-MIT License
-
-@dependency
-   jquery 1.7.2
-   kinetic 4.7.4
-   box2d 0.2.0
-   */
+** 
+** Flanet 1.0.5
+** Copyright (C) 2012 juwon.lee
+** MIT License
+** @dependency
+**   jquery 1.7.2
+**   kinetic 4.7.4
+**   box2d 0.2.0
+*/
 
 //Flanet Singleton
 var Flanet = {
@@ -73,12 +70,12 @@ var Flanet = {
 		this.stage.onFrame(function(frame){
 			that.step();
 		});
-		*/
+*/
 
-		this.animation = new Kinetic.Animation(function(frame){
-			that.step();
-		}, that.stage.getLayer(0));
-	},
+this.animation = new Kinetic.Animation(function(frame){
+	that.step();
+}, that.stage.getLayer(0));
+},
 
 	// thread management
 	start : function(){
@@ -99,7 +96,7 @@ var Flanet = {
 				/* for get better performance when idle state
 				if(world.getAvgSpeed() < 1 && !this.mouseEvent.drag)
 				world.stop();
-				*/
+			*/
 			}
 		}
 		if(this.animation_extra !== undefined)
@@ -234,6 +231,7 @@ Flanet.Panel = function(json){
 
 Flanet.Panel.prototype = {
 
+	// sharing variables
 	pos : undefined,
 	width : 0,
 	height : 0,
@@ -243,11 +241,11 @@ Flanet.Panel.prototype = {
 	image : undefined,
 	text : undefined,
 
-	// physics
+	// physics element
 	bodyDef : undefined,
 	body : undefined,
 
-	// panels information
+	// user data
 	content : undefined,
 
 	// default physics constant
