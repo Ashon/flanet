@@ -28,7 +28,7 @@ var Flanet = {
 
 	animation_extra : undefined,
 
-	// initialize/
+	// initialize
 	init : function(json){
 		var that = this;
 		var queryContainer = $("#" + json.container);
@@ -75,7 +75,7 @@ var Flanet = {
 		this.animation = new Kinetic.Animation(function(frame){
 			that.step();
 		}, that.stage.getLayer(0));
-		},
+	},
 
 	// thread management
 	start : function(){
@@ -114,11 +114,11 @@ var Flanet = {
 			if(this.worldArray[i].intersects(v))
 				return this.worldArray[i];
 			return undefined;
-		},
+	},
 
-		getCurrentWorld : function(){
-			return this.mouseEvent.world;
-		},
+	getCurrentWorld : function(){
+		return this.mouseEvent.world;
+	},
 
 	// mouseEvent module
 	mouseEvent : {
