@@ -70,7 +70,9 @@ app.configure(function () {
 
 // page routing
 app.get('/', routes.index);
-app.get('/account', ensureAuthenticated, routes.account);
+app.get('/account', function(req, res){
+	ensureAuthenticated(req, res, routes.account);
+});
 app.get('/login', routes.login);
 
 // GET /auth/facebook
