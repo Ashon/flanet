@@ -3,7 +3,7 @@
  * MIT Licensed.
  * Copyright (C) 2012 juwon.lee
  *
- * @dependency
+ * @dependencyz
  *   jquery 1.7.2
  *   kinetic 4.7.4
  *   box2d 0.2.0
