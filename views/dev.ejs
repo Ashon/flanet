@@ -15,7 +15,7 @@
 	<script type="text/javascript" src="/lib/box2djs.0.2.0.jquery.min.js"></script>
 
 	<!-- flanet framework -->
-	<script type="text/javascript" src='/lib/dev/flanet-v1.0.6.js'></script>
+	<script type="text/javascript" src='/lib/dev/flanet-v1.0.7.js'></script>
 </head>
 <body>
 	<!-- initialize flanet stage -->
@@ -30,7 +30,6 @@
 		var y = height * .5;
 		var scale = 50;
 		//flanet initialize
-		Flanet.init({ container : 'stage' });
 	</script>
 	<div class="blur_wrapper">
 		<canvas class="blurred" style="position:fixed;top:0;left:0"></canvas>
@@ -47,27 +46,6 @@
 	<!-- initialize script -->
 	<script src="/js/init.js"></script>
 	<!-- Flanet start -->
-
-	<script>
-		(function(){
-			$('canvas.blurred')[0].width = $('.header').width();
-			$('canvas.blurred')[0].height = 53;
-
-			var c1 = $('.kineticjs-content').find('canvas');
-			var ctx1 = c1[0].getContext('2d');
-			var c2 = $('.blur_wrapper').find('canvas');
-			var ctx2 = c2[0].getContext('2d');
-
-			Flanet.animation_extra = function(){
-				ctx2.putImageData(ctx1.getImageData(0, 0, c2.width(), c2.height()), 0, 0);
-			};
-			c2.clip();
-		})();
-	</script>
-
-	<script>
-		Flanet.start();
-	</script>
 	<div class="copyright"><p>Flanet v1.0.5<br/>copyright(c) juwon.lee all rights reserved.</p></div>
 </body>
 </html>

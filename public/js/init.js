@@ -21,7 +21,6 @@
 		width : width,
 		height : height
 	});
-	Flanet.addWorld(world);
 
 	var string = [
 	"This is Panel.",
@@ -52,4 +51,8 @@
 			}
 		}));
 	}
+	var stage = new Flanet.Stage({ container : 'stage' });
+	Flanet.init(stage);
+	stage.addWorld(world);
+	stage.start();
 })();

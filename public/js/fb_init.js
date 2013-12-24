@@ -32,7 +32,6 @@
 		width : width,
 		height : height
 	});
-	Flanet.addWorld(world);
 	// async : get friendlist - start
 	$.get('https://graph.facebook.com/me/friends',{ access_token: token },
 		// async callback function - start
@@ -76,4 +75,10 @@
 			
 		} // async callback function - end
 	); // async : get friendlist - end
+	
+	var stage = new Flanet.Stage({ container : 'stage' });
+	Flanet.init(stage);
+	stage.addWorld(world);
+	stage.start();
+
 })(userId, userName, token);
