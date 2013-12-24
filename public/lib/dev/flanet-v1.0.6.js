@@ -410,7 +410,7 @@ var Flanet = {};
 		centroid : undefined,
 		layer : undefined,
 
-		// panel information
+		// panel informationP
 		panels : [],
 
 		// limit boundary

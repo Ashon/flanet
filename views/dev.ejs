@@ -50,7 +50,6 @@
 
 	<script>
 		(function(){
-			
 			$('canvas.blurred')[0].width = $('.header').width();
 			$('canvas.blurred')[0].height = 53;
 
@@ -62,6 +61,7 @@
 			Flanet.animation_extra = function(){
 				ctx2.putImageData(ctx1.getImageData(0, 0, c2.width(), c2.height()), 0, 0);
 			};
+			c2.clip();
 		})();
 	</script>
 
