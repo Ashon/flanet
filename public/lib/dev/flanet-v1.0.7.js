@@ -1,10 +1,10 @@
 /*
  * Flanet v1.0.7
- * 1.0.5 - first release.
- * 1.0.6 - kineticjs 4.7.4
- * 1.0.7 - refactor flanet structure
  * MIT Licensed.
  * Copyright (C) 2012 juwon.lee
+ * 1.0.5 - release.
+ * 1.0.6 - apply kineticjs 4.7.4
+ * 1.0.7 - redesign flanet structure
  *
  * @dependency
  *   jquery 1.7.2
@@ -17,8 +17,6 @@ var Flanet = {};
 
 (function(){
 	Flanet = {
-		
-
 		// physics engine iteration.
 		iteration : 8,
 
@@ -36,12 +34,11 @@ var Flanet = {};
 
 		// initialize
 		init : function(s){
-
 			// flanet stage
 			this.stage = s;
 		},
 
-		// mouseEvent module
+		// mouseEvent instance as a singleton
 		mouseEvent : {
 			// mouse status check
 			drag : false,
@@ -83,10 +80,8 @@ var Flanet = {};
 						if(this.world.intersects(pos)){
 							this.body = this.world.getBody(this.mPos);
 							var idx = this.world.getIndex(this.body);
-							if(idx == -1)
-								this.panel = this.world.getCenterPanel();
-							else
-								this.panel = this.world.getPanel(idx);
+							this.panel = idx == -1 ? this.world.getCenterPanel() :
+							this.world.getPanel(idx);
 							if(this.panel){
 								if(!this.moved){
 									// panel click event
@@ -130,7 +125,7 @@ var Flanet = {};
 					md.target.Set(this.mPos.x, this.mPos.y);
 					md.maxForce = this.bigScala * this.body.m_mass;
 					md.timeStep = Flanet.timestep;
-					if(!this.mJoint)
+					if(this.mJoint === undefined)
 						this.mJoint = this.world.getWorld().CreateJoint(md);
 					if(this.world.getIndex(this.body) == -1)
 						this.world.setCentroid(this.mPos);
@@ -147,8 +142,7 @@ var Flanet = {};
 
 (function(){
 	// Flanet.Collection constructor - array extension
-	Flanet.Collection = function(){
-	};
+	Flanet.Collection = function(){};
 	Flanet.Collection.prototype = [];
 	Flanet.Collection.prototype.get = function(idx){
 		return this[idx];
@@ -158,46 +152,40 @@ var Flanet = {};
 		for(var i = 0; i < this.length; i++)
 			func(this[i], i);
 		if(callback !== undefined)
-		callback(this);
+			callback(this);
 	};
 })();
 
 (function(){
 	Flanet.Stage = function(json){
-		this.init(json);
+		var worlds = new Flanet.Collection();
+		var that = this;
+		var queryContainer = $("#" + json.container);
+
+		// Kinetic Stage
+		this.stage = new Kinetic.Stage({
+			container : json.container,
+			width : queryContainer.width(),
+			height : queryContainer.height()
+		});
+
+		// mouseEvent binding
+		queryContainer.mousemove(function(e){
+			Flanet.mouseEvent.mousemove(e);
+		}).click(function(e){
+			Flanet.mouseEvent.click(e);
+		}).mousedown(function(e){
+			Flanet.mouseEvent.mousedown(e);
+		}).mouseup(function(e){
+			Flanet.mouseEvent.mouseup(e);
+		});
+
+		this.animation = new Kinetic.Animation(function(frame){ that.step(); },
+			that.stage.getLayer(0));
 	};
 	Flanet.Stage.prototype = {
 		// box2d world
 		worlds : new Flanet.Collection(),
-
-		// initialize
-		init : function(json){
-			var worlds = new Flanet.Collection();
-			var that = this;
-			var queryContainer = $("#" + json.container);
-
-			this.stage = new Kinetic.Stage({
-				container : json.container,
-				width : queryContainer.width(),
-				height : queryContainer.height()
-			});
-
-			// html container mouseEvent binding
-			queryContainer.mousemove(function(e){
-				Flanet.mouseEvent.mousemove(e);
-			});
-			queryContainer.click(function(e){
-				Flanet.mouseEvent.click(e);
-			});
-			queryContainer.mousedown(function(e){
-				Flanet.mouseEvent.mousedown(e);
-			});
-			queryContainer.mouseup(function(e){
-				Flanet.mouseEvent.mouseup(e);
-			});
-
-			this.animation = new Kinetic.Animation(function(frame){ that.step(); }, that.stage.getLayer(0));
-		},
 
 		// thread management
 		start : function(){
@@ -219,7 +207,6 @@ var Flanet = {};
 			});
 
 			if(this.animation_extra !== undefined){
-				console.log('asd');
 				this.animation_extra();
 			}
 		},
@@ -245,47 +232,38 @@ var Flanet = {};
 (function(){
 	//Flanet Panel
 	Flanet.Panel = function(json){
-		this.init(json);
+		//position
+		this.pos = new b2Vec2(json.x, json.y);
+		this.rotation = 0;
+		this.width = json.width;
+		this.height = json.height;
+		this.radius = Math.sqrt(this.width * this.width + this.height * this.height);
+		this.content = new Flanet.Content(json.content);
+
+		// physics body
+		var boxSd = new b2BoxDef();
+		this.bodyDef = new b2BodyDef();
+
+		var body = json.body || Flanet.physics;
+
+		boxSd.friction = body.friction;
+		boxSd.restitution = body.restitution;
+		boxSd.density = body.density;
+		boxSd.extents.Set(this.width, this.height);
+
+		this.bodyDef.AddShape(boxSd);
+		this.bodyDef.linearDamping = body.linearDamping;
+		this.bodyDef.angularDamping = body.angularDamping;
+		this.bodyDef.position.Set(this.pos.x, this.pos.y);
+
+		// kinetic image
+		var img = new Image();
+		img.src = this.content.getImgSrc();
+		img.onload = this.setImage(img);
+		this.setText(this.content.getName());
 	};
 
 	Flanet.Panel.prototype = {
-		// initialize
-		init : function(json){
-			//position
-			this.pos = new b2Vec2(json.x, json.y);
-			this.rotation = 0;
-			this.width = json.width;
-			this.height = json.height;
-			this.radius = Math.sqrt(this.width * this.width + this.height * this.height);
-			this.content = new Flanet.Content(json.content);
-
-			// physics body
-			var boxSd = new b2BoxDef();
-			this.bodyDef = new b2BodyDef();
-
-			var body;
-			if(json.body === undefined)
-				body = Flanet.physics;
-			else
-				body = json.body;
-			boxSd.friction = body.friction;
-			boxSd.restitution = body.restitution;
-			boxSd.density = body.density;
-			boxSd.extents.Set(this.width, this.height);
-
-			this.bodyDef.AddShape(boxSd);
-
-			this.bodyDef.linearDamping = body.linearDamping;
-			this.bodyDef.angularDamping = body.angularDamping;
-			this.bodyDef.position.Set(this.pos.x, this.pos.y);
-
-			// kinetic image
-			var img = new Image();
-			img.src = this.content.getImgSrc();
-			img.onload = this.setImage(img);
-			this.setText(this.content.getName());
-		},
-
 		// set canvas image element
 		setImage : function(img){
 			var that = this;
@@ -383,7 +361,22 @@ var Flanet = {};
 (function(){
 	//Flanet World
 	Flanet.World = function(json){
-		this.init(json);
+		this.panels = new Flanet.Collection();
+		this.centroid = new b2Vec2(this.width * 0.5, this.height * 0.5);
+		this.width = json.width;
+		this.height = json.height;
+		var worldAABB = new b2AABB();
+
+		// physics boundary
+		worldAABB.minVertex.Set(-this.boundary, -this.boundary);
+		worldAABB.maxVertex.Set(this.width + this.boundary, this.height + this.boundary);
+
+		// physics world init
+		this.world = new b2World(worldAABB, this.gravity, true);
+
+		// draw layer init
+		this.layer = new Kinetic.Layer();
+		this.setCenterPanel(json.centerPanel);
 	};
 
 	Flanet.World.prototype = {
@@ -393,32 +386,12 @@ var Flanet = {};
 		// gravity vector
 		gravity : new b2Vec2(0, 0),
 
-		//initialize
-		init : function(json){
-			this.panels = new Flanet.Collection();
-			this.centroid = new b2Vec2(this.width * 0.5, this.height * 0.5);
-			this.width = json.width;
-			this.height = json.height;
-			var worldAABB = new b2AABB();
-
-			// physics boundary
-			worldAABB.minVertex.Set(-this.boundary, -this.boundary);
-			worldAABB.maxVertex.Set(this.width + this.boundary, this.height + this.boundary);
-
-			// physics world init
-			this.world = new b2World(worldAABB, this.gravity, true);
-
-			// draw layer init
-			this.layer = new Kinetic.Layer();
-			this.setCenterPanel(json.centerPanel);
-		},
-
 		// get physical body
 		getBody : function(v){
 			// aabb : axis aligned bounding box
 			var aabb = new b2AABB();
 			var maxCount = 10;
-			var shapes = [];
+			var shapes = new Flanet.Collection();
 			var body;
 
 			// make small aabb to contact check
@@ -427,22 +400,19 @@ var Flanet = {};
 
 			// get contact query
 			var count = this.world.Query(aabb, shapes, maxCount);
-			for(var i = 0; i < count; ++i)
-				if(!shapes[i].m_body.IsStatic())
-					// get only one body
-				if(shapes[i].TestPoint(v)){
+			for(var i = 0; i < count; i++){
+				if(!shapes[i].m_body.IsStatic() && shapes[i].TestPoint(v)){
 					body = shapes[i].m_body;
 					break;
 				}
-				return body;
-			},
+			}
+			return body;
+		},
 
 		// get body index
 		getIndex : function(body){
-			if(body == this.centerPanel.getBody())
-				return -1;
-			else
-				this.panels.each(function(panel, index){
+			return body == this.centerPanel.getBody() ? -1 : this.panels.each(
+				function(panel, index){
 					if(body == panel.getBody())
 						return index;
 				});
@@ -473,7 +443,7 @@ var Flanet = {};
 			if(this.activation){
 				this.panels.each(function(panel, idx){
 					var body = panel.getBody();
-					// center panel has a gravity - panel direction is pointing centerpanel.
+					// center panel has a gravity
 					var direction = b2Math.SubtractVV(that.centerPanel.getPosition(),
 						body.GetCenterPosition());
 
@@ -493,7 +463,8 @@ var Flanet = {};
 				var cb = this.centerPanel.getBody();
 				var cd = b2Math.SubtractVV(this.centroid, cb.GetCenterPosition());
 				cb.ApplyForce(
-					b2Math.MulFV(cb.m_mass * this.centerPanel.getDistance(this.centroid), cd),
+					b2Math.MulFV(cb.m_mass *
+						this.centerPanel.getDistance(this.centroid), cd),
 					this.centroid);
 				this.centerPanel.update();
 				this.world.Step(timeStep, iteration);
@@ -576,17 +547,14 @@ var Flanet = {};
 (function(){
 	//Flanet Content
 	Flanet.Content = function(json){
-		this.init(json);
+		this.setID(json.id);
+		this.setName(json.name);
+		this.setImgSrc(json.imgSrc);
+		this.setClicked(json.clicked);
+		this.setDragged(json.dragged);
+		this.setDblclicked(json.dblclicked);
 	};
 	Flanet.Content.prototype = {
-		init : function(json){
-			this.setID(json.id);
-			this.setName(json.name);
-			this.setImgSrc(json.imgSrc);
-			this.setClicked(json.clicked);
-			this.setDragged(json.dragged);
-			this.setDblclicked(json.dblclicked);
-		},
 		setID : function(id){
 			this.id = id;
 		},
